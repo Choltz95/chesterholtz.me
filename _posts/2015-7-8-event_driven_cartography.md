@@ -6,12 +6,4 @@ permalink: /blog/post/event_driven_cartography
 categories:
   - Uncategorized
 ---
-
-[Peter Norvig][1] 
-
-<pre class="prettyprint linenums">
-</pre>
-
-
-[1]: 
-
+To write

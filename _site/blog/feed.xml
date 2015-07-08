@@ -6,16 +6,48 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Jul 2015 03:47:49 -0400</pubDate>
-    <lastBuildDate>Wed, 08 Jul 2015 03:47:49 -0400</lastBuildDate>
+    <pubDate>Wed, 08 Jul 2015 15:30:48 -0400</pubDate>
+    <lastBuildDate>Wed, 08 Jul 2015 15:30:48 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>Visualizing the genetic diversity of finite populations</title>
-        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Moran_process&quot;&gt;Moran Process&lt;/a&gt; is a simple stochastic process used to describe finite populations[wikipedia].&lt;/p&gt;
+        <title>Distrbuted computation with a raspberry pi cluster</title>
+        <description>&lt;p&gt;To write&lt;/p&gt;
+</description>
+        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/rpi_distributed</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/rpi_distributed</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>Introduction and personal statement</title>
+        <description>&lt;p&gt;I am a junior at &lt;a href=&quot;http://www.hajim.rochester.edu/&quot;&gt;The University of Rochester Hajim School of Engineering&lt;/a&gt; studying computer science and mathematics. I am interested in investing myself in projects which present challenges relating several sciences or technologies. I am currently seeking a summer internship, research position, or job in computer science.&lt;/p&gt;
 
-&lt;pre class=&quot;prettyprint linenums&quot;&gt;
-&lt;/pre&gt;
+&lt;p&gt;I would like to continue a path of research in big data analysis and in developing software to interface with real-world data. Currently I am working on writting real time mapping visualization of occurances of global chaotic events. &lt;/p&gt;
+
+&lt;p&gt;Along with computer science, I also have a love of physics and mathematics and I am especially interested in the application of game theory to political science. &lt;/p&gt;
+
+&lt;p&gt;My previous website served as a portfolio to demonstrate my competence in several web technologies and frameworks, but grew to be quite bloated and unecessarily flashy. I decided to focus less on the website itself and instead to make a website which contained deep and meaningful content.&lt;/p&gt;
+
+&lt;p&gt;Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/personal_statement</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/personal_statement</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>Visualizing the genetic diversity of finite populations</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Moran_process&quot;&gt;Moran Process&lt;/a&gt; is a simple stochastic process used to describe finite populations[wikipedia].
+I created a simply visualization of fundamental properties of an evolving population. Since color can be represented as a 6-digit hexadecimal number, we can generalize color to be representative of an agents DNA, and preform operations representing mutation, inheritence, selection, and crossover by altering the color of the agent.&lt;/p&gt;
 </description>
         <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/finite_population_visualization</link>
@@ -28,12 +60,7 @@
     
       <item>
         <title>Evis - event driven cartography with the GDELT dataset</title>
-        <description>&lt;p&gt;[Peter Norvig][1] &lt;/p&gt;
-
-&lt;pre class=&quot;prettyprint linenums&quot;&gt;
-&lt;/pre&gt;
-
-&lt;p&gt;[1]: &lt;/p&gt;
+        <description>&lt;p&gt;To write&lt;/p&gt;
 </description>
         <pubDate>Wed, 08 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/event_driven_cartography</link>
@@ -50,7 +77,7 @@
 
 &lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.&lt;/p&gt;
 
-&lt;p&gt;There are two important parts to an interpreter: the &lt;code&gt;parsing component&lt;/code&gt; and the &lt;code&gt;evaluation component&lt;/code&gt;. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
+&lt;p&gt;There are two important parts to consider when writting an interpreter: &lt;code&gt;parsing&lt;/code&gt; and &lt;code&gt;evaluation&lt;/code&gt;. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
 
 &lt;p&gt;Traditionally, the parsing process is separated into two parts: the &lt;code&gt;tokenizer&lt;/code&gt; and the &lt;code&gt;AST assembler&lt;/code&gt;. &lt;/p&gt;
 

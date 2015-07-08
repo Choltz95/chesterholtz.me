@@ -68,7 +68,7 @@
 
 <p>My <a href="http://github.com/Choltz95/microlispjs">Micro Lisp</a> is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my <a href="http://github.com/Choltz95/microlispjs">github</a>, while one can test a deployed version <a href="http://littlelispjs.divshot.io/">here</a>. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.</p>
 
-<p>There are two important parts to an interpreter: the <code>parsing component</code> and the <code>evaluation component</code>. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.</p>
+<p>There are two important parts to consider when writting an interpreter: <code>parsing</code> and <code>evaluation</code>. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.</p>
 
 <p>Traditionally, the parsing process is separated into two parts: the <code>tokenizer</code> and the <code>AST assembler</code>. </p>
 

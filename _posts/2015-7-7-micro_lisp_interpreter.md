@@ -11,7 +11,7 @@ This past semester I have been rereading Gerald Sussman's popular text: Structur
 
 My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.
 
-There are two important parts to an interpreter: the `parsing component` and the `evaluation component`. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
+There are two important parts to consider when writting an interpreter: `parsing` and `evaluation`. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
 
 Traditionally, the parsing process is separated into two parts: the `tokenizer` and the `AST assembler`. 
 
