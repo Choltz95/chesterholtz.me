@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chester Holtz</title>
+    <description>Chester Holtz&#39;s website.  I am an aspiring scientist.
+</description>
+    <link>http://chesterholtz.me/</link>
+    <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 08 Jul 2015 02:27:30 -0400</pubDate>
+    <lastBuildDate>Wed, 08 Jul 2015 02:27:30 -0400</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Visualizing the genetic diversity of finite populations</title>
+        <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Moran_process&quot;&gt;Moran Process&lt;/a&gt; is a simple stochastic process used to describe finite populations[wikipedia].&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+&lt;/pre&gt;
+</description>
+        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/finite_population_visualization</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/finite_population_visualization</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>Evis - event driven cartography with the GDELT dataset</title>
+        <description>&lt;p&gt;[Peter Norvig][1] &lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;[1]: &lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/event_driven_cartography</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/event_driven_cartography</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>Micro Lisp interpreter and garbage collection</title>
+        <description>&lt;p&gt;This past semester I have been rereading Gerald Sussman&amp;rsquo;s popular text: Structure and Interpretation of Computer Programs. I have worked on a lisp interpreter in JavaScript in the past inspired by the implementations of &lt;a href=&quot;https://en.wikipedia.org/wiki/Peter_Norvig&quot;&gt;Peter Norvig&lt;/a&gt; and &lt;a href=&quot;https://github.com/maryrosecook&quot;&gt;Mary Rose Cook&lt;/a&gt; - one that followed the 10 rules of &lt;a href=&quot;https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)&quot;&gt;John McCarthy&lt;/a&gt; detailed in his paper &lt;a href=&quot;http://www.cse.sc.edu/%7Emgv/csce330f13/micromanualLISP.pdf&quot;&gt;A Micro-Manual for Lisp - Not the whole Truth&lt;/a&gt;. This implementation is what will be discussed in this first blog post. In a future post, I may go into detail regarding my eventual reimplimintation of Micro Lisp and several garbage collection algorithms in C++.&lt;/p&gt;
+
+&lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.&lt;/p&gt;
+
+&lt;p&gt;There are two important parts to an interpreter: the &lt;code&gt;parsing component&lt;/code&gt; and the &lt;code&gt;evaluation component&lt;/code&gt;. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
+
+&lt;p&gt;Traditionally, the parsing process is separated into two parts: the &lt;code&gt;tokenizer&lt;/code&gt; and the &lt;code&gt;AST assembler&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;The tokenizer demarcates a string of input characters into &lt;code&gt;tokens&lt;/code&gt; before passing them on to be assembled into an AST. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.&lt;/p&gt;
+
+&lt;p&gt;We tokenize by taking advantage of JavaScript&amp;rsquo;s &lt;code&gt;replace()&lt;/code&gt; and &lt;code&gt;split()&lt;/code&gt; functions to take a character string input, add whitespace around each parentheses, and split the result by whitespace to get a JavaScript list of tokens. tokenize() is given below.&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;var tokenize = function(input) {
+   return input.replace(/\(/g, &#39; ( &#39;)
+               .replace(/\)/g, &#39; ) &#39;)
+               .trim()
+               .split(/\s+/);
+ };
+&lt;/pre&gt;
+
+&lt;p&gt;An AST, or Abstract Syntax Tree is a representation of the structure of code written in a language. The tree is abstract since each node of this tree represents a construct in code, but some elements of the code may be ommitted, i.e. parentheses in our case. Since the inherint syntax structure of a lisp symbolic expression - &amp;rsquo;S-Expression&amp;rsquo; - is representative of an AST, this task is quite simple. An S-Expression can simply be defined inductively as an atom, or an expression (x y) where x and y can be S-Expressions themselves.&lt;/p&gt;
+
+&lt;p&gt;Atoms are collections of letters, digits or other characters not otherwise defined in the micro-lisp language. furthermore, lists consist of a left parenthesis followed by a head - or &lt;code&gt;CAR&lt;/code&gt; - and a tail - a &lt;code&gt;CDR&lt;/code&gt;. Lists always end with a closing parenthesis.&lt;/p&gt;
+
+&lt;p&gt;Parsing a Lisp S-Expression is quite simple. First, parse() is called with a character string input representing the program. to be interpreted. We then tokenize this input to get a list of tokens and pass this list into read_from to assemble the AST. We shift through elements of the list one at a time. If the token at the 0th indice is a &amp;rsquo;(&amp;rsquo;, we instantiate a list of S-Expressions and recursively add to that list until we encounter a matching &amp;rsquo;)&amp;rsquo;. The parse() logic is given below.&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;function parse(input) {
+  return read_from(tokenize(input));
+}
+
+function read_from(tokens) {
+    if (tokens.length == 0) {
+        throw &#39;unexpected EOF&#39;;
+    }
+
+    var token = tokens.shift();
+    if (&#39;(&#39; == token) {
+        var L = [];
+        while (tokens[0] != &#39;)&#39;) {
+            L.push(read_from(tokens));
+        }
+        tokens.shift();
+        return L;
+    } else {
+        return atom(token);
+      }
+}
+&lt;/pre&gt;
+
+&lt;p&gt;Below is an example of input, and the resulting output of parsing the Lisp S-Expression (hello (hello world)).&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;&gt;tokenize(&#39;(hello (hello world))&#39;)
+[&quot;(&quot;, &quot;hello&quot;, &quot;(&quot;, &quot;hello&quot;, &quot;world&quot;, &quot;)&quot;, &quot;)&quot;]
+&lt;/pre&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;&gt;parse(&#39;(hello (hello world))&#39;)
+[&quot;hello&quot;, [&quot;hello&quot;, &quot;world&quot;]]
+&lt;/pre&gt;
+
+&lt;p&gt;Evaluation is the most complex part of the interpretation process. When we evaluate, we look at an expression and check its value according to the &lt;code&gt;env&lt;/code&gt; environment - implemented as a JS Dictionary. An environment is simply a mapping from a variable name to its value. &lt;/p&gt;
+
+&lt;p&gt;In code, we impliment a finite number of predefined functions in the global environment as&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+var Operations = {
+&#39;+&#39;       : function(a, b) { return a + b; },
+&#39;-&#39;       : function(a, b) { return a - b;},
+&#39;*&#39;       : function(a, b) { return a * b; },
+&#39;/&#39;       : function(a, b) { return a / b; },
+&#39;&lt;&#39;       : function(a, b) { return a &lt; b; },
+&#39;&gt;&#39;       : function(a, b) { return a &gt; b; },
+&#39;&lt;=&#39;      : function(a, b) { return a &lt;= b; },
+&#39;&gt;=&#39;      : function(a, b) { return a &gt;= b; },
+&#39;=&#39;       : function(a, b) { return a == b; },
+&#39;or&#39;      : function(a,b)  { return a||b;   },
+&#39;cons&#39;    : function(a, b) { return [a].concat(b); },
+&#39;car&#39;     : function(a)    { return (a.length !==0) ? a[0] : null; },
+&#39;cdr&#39;     : function(a)    { return (a.length&gt;1) ? a.slice(1) : null; },
+&#39;list&#39;    : function()     { return Array.prototype.slice.call(arguments); },
+};
+&lt;/pre&gt;
+
+&lt;p&gt;and impliment a local environment when the interpreter parses a &lt;code&gt;lambda&lt;/code&gt; or &lt;code&gt;def&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;p&gt;When we evaluate an expression, we check the expression&amp;rsquo;s function and arguments. If an expression is prefixed by a &lt;code&gt;&amp;#39;&lt;/code&gt;, or the function being applied is the string QUOTE, we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;QUOTE - The value of (QUOTE A) is A&lt;/li&gt;
+&lt;li&gt;CAR - The value of (CAR e) is the first element of e where e is defined as a non-empty list. i.e. (CAR (QUOTE (A B))) returns A&lt;/li&gt;
+&lt;li&gt;CDR - The value of (CDR e) is the list of remaining elements of e when CAR of e is removed, where e is defined above. ie (CDR (QUOTE (A B))) returns B.&lt;/li&gt;
+&lt;li&gt;CONS - The value of (CONS e1 e2) is the list that results from prefixing e1 onto e2. Thus, (CONS (QUOTE A) (QUOTE B)) returns the list (A B).&lt;/li&gt;
+&lt;li&gt;EQUAL - The value of (EQUAL e1 e2) is true if e1 = e2 and false if otherwise. (EQUAL 1 2) returns false.&lt;/li&gt;
+&lt;li&gt;ATOM - The value of (ATOM e1) is true if e1 is an atom and false if otherwise. (ATOM)&lt;/li&gt;
+&lt;li&gt;COND - The value of (COND(e1 e1) &amp;hellip; (pn en)) is the value of ei, where pi is the the first ofthe p&amp;rsquo;s whose value is not NIL.&lt;/li&gt;
+&lt;li&gt;DEFINE - The DEFINE function maps a variable to the given expression.&lt;/li&gt;
+&lt;li&gt;LAMBDA - Lambda is a construct in the Micro-Lisp language which allows for the definition
+of anonymous functions.&lt;/li&gt;
+&lt;li&gt;Operators - We also provide definitions for traditional boolean ( =, &amp;gt;, ≥, &amp;lt;, ≤&amp;hellip;) and
+arithmetic operators (+, −, ∗, /&amp;hellip;)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;An example of the case &amp;lsquo;DEFINE&amp;rsquo; is given below:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+case &quot;DEFINE&quot;:
+    [_, variable, exp] = x;
+    env.set(variable, evaluate(exp, env));
+&lt;/pre&gt;
+
+&lt;p&gt;Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &amp;#39;variable&amp;rsquo; and its value to the argument expression (x[2])  evaluated with respect to the global enviornment.&lt;/p&gt;
+
+&lt;p&gt;With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &amp;ldquo;sample&amp;rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;&gt; (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))
+null
+&gt; (define map (lambda (f xs) (cond (= xs nil) nil (cons (f (car xs)) (map f (cdr xs))))))
+null
+&gt; (map (lambda (x) (+ x 1)) (range 0 10))
+(1 2 3 4 5 6 7 8 9 10 null)
+&gt; (map (lambda (x) (fac x)) (range 0 10))
+(1 1 2 6 24 120 720 5040 40320 362880 null)
+&gt; (define fib (lambda (n) (cond (or (= n 0) (= n 1)) 1 (+ (fib (- n 1)) (fib (- n 2))))))
+null
+&gt; (map (lambda (x) (fib x)) (range 0 10))
+(1 1 2 3 5 8 13 21 34 55 null)&lt;/pre&gt;
+
+&lt;p&gt;Originally I had intended to also discuss preforming garbage collection on list based system in this post and implementing a turtle graphics module utilizing HTML5 canvas, but I think I will visit those topics at a later time. &lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/micro_lisp_interpreter</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/micro_lisp_interpreter</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+  </channel>
+</rss>

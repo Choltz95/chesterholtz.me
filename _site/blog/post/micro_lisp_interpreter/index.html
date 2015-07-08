@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name = "viewport" content = "width = device-width">
+
+  <title>Micro Lisp interpreter and garbage collection</title>
+  <meta name="description" content="This past semester I have been rereading Gerald Sussman&rsquo;s popular text: Structure and Interpretation of Computer Programs. I have worked on a lisp inte...">
+
+  <link rel="stylesheet" href="/css/blog.css">
+
+  
+
+  <link rel="canonical" href="http://chesterholtz.me/blog/post/micro_lisp_interpreter">
+  <link rel="alternate" type="application/rss+xml" title="Chester Holtz" href="http://chesterholtz.me/blog/feed.xml" />
+
+  <!-- fonts.com -->
+  <script type="text/javascript">
+    // first, create the object that contains
+    // configuration variables
+    MTIConfig = {};
+
+    // next, add a variable that will control
+    // whether or not FOUT will be prevented
+    MTIConfig.EnableCustomFOUTHandler = true // true = prevent FOUT
+  </script>
+  <script type="text/javascript" src="http://fast.fonts.net/jsapi/3ac768d8-7a5c-4fd8-b377-f61d7f1760fa.js"></script>
+
+  <!-- prettify -->
+  <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/javascript/prettify.js"></script>
+</head>
+
+
+  <body onload="prettyPrint()">
+
+    <div id="container" class="group">
+
+  <h1>
+    <a class="site-title" href="/blog/">Chester Holtz</a>
+  </h1>
+
+  <div class="navigation-links">
+    <a href="/">About</a>
+    <span id="desktop-only">
+      &nbsp;
+      <a href="/blog/archive.html">Archive</a>
+      &nbsp;
+      <a href="/blog/feed.xml">RSS</a>
+    </span>
+  </div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <div id="content" class="group">
+
+  <header class="post-header">
+    <h2 class="post-title"><a href="">Micro Lisp interpreter and garbage collection</a></h1>
+  </header>
+
+  <div class="main">
+    <p>This past semester I have been rereading Gerald Sussman&rsquo;s popular text: Structure and Interpretation of Computer Programs. I have worked on a lisp interpreter in JavaScript in the past inspired by the implementations of <a href="https://en.wikipedia.org/wiki/Peter_Norvig">Peter Norvig</a> and <a href="https://github.com/maryrosecook">Mary Rose Cook</a> - one that followed the 10 rules of <a href="https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)">John McCarthy</a> detailed in his paper <a href="http://www.cse.sc.edu/%7Emgv/csce330f13/micromanualLISP.pdf">A Micro-Manual for Lisp - Not the whole Truth</a>. This implementation is what will be discussed in this first blog post. In a future post, I may go into detail regarding my eventual reimplimintation of Micro Lisp and several garbage collection algorithms in C++.</p>
+
+<p>My <a href="http://github.com/Choltz95/microlispjs">Micro Lisp</a> is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my <a href="http://github.com/Choltz95/microlispjs">github</a>, while one can test a deployed version <a href="http://littlelispjs.divshot.io/">here</a>. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.</p>
+
+<p>There are two important parts to an interpreter: the <code>parsing component</code> and the <code>evaluation component</code>. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.</p>
+
+<p>Traditionally, the parsing process is separated into two parts: the <code>tokenizer</code> and the <code>AST assembler</code>. </p>
+
+<p>The tokenizer demarcates a string of input characters into <code>tokens</code> before passing them on to be assembled into an AST. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.</p>
+
+<p>We tokenize by taking advantage of JavaScript&rsquo;s <code>replace()</code> and <code>split()</code> functions to take a character string input, add whitespace around each parentheses, and split the result by whitespace to get a JavaScript list of tokens. tokenize() is given below.</p>
+
+<pre class="prettyprint linenums">var tokenize = function(input) {
+   return input.replace(/\(/g, ' ( ')
+               .replace(/\)/g, ' ) ')
+               .trim()
+               .split(/\s+/);
+ };
+</pre>
+
+<p>An AST, or Abstract Syntax Tree is a representation of the structure of code written in a language. The tree is abstract since each node of this tree represents a construct in code, but some elements of the code may be ommitted, i.e. parentheses in our case. Since the inherint syntax structure of a lisp symbolic expression - &rsquo;S-Expression&rsquo; - is representative of an AST, this task is quite simple. An S-Expression can simply be defined inductively as an atom, or an expression (x y) where x and y can be S-Expressions themselves.</p>
+
+<p>Atoms are collections of letters, digits or other characters not otherwise defined in the micro-lisp language. furthermore, lists consist of a left parenthesis followed by a head - or <code>CAR</code> - and a tail - a <code>CDR</code>. Lists always end with a closing parenthesis.</p>
+
+<p>Parsing a Lisp S-Expression is quite simple. First, parse() is called with a character string input representing the program. to be interpreted. We then tokenize this input to get a list of tokens and pass this list into read_from to assemble the AST. We shift through elements of the list one at a time. If the token at the 0th indice is a &rsquo;(&rsquo;, we instantiate a list of S-Expressions and recursively add to that list until we encounter a matching &rsquo;)&rsquo;. The parse() logic is given below.</p>
+
+<pre class="prettyprint linenums">function parse(input) {
+  return read_from(tokenize(input));
+}
+
+function read_from(tokens) {
+    if (tokens.length == 0) {
+        throw 'unexpected EOF';
+    }
+
+    var token = tokens.shift();
+    if ('(' == token) {
+        var L = [];
+        while (tokens[0] != ')') {
+            L.push(read_from(tokens));
+        }
+        tokens.shift();
+        return L;
+    } else {
+        return atom(token);
+      }
+}
+</pre>
+
+<p>Below is an example of input, and the resulting output of parsing the Lisp S-Expression (hello (hello world)).</p>
+
+<pre class="prettyprint linenums">>tokenize('(hello (hello world))')
+["(", "hello", "(", "hello", "world", ")", ")"]
+</pre>
+
+<pre class="prettyprint linenums">>parse('(hello (hello world))')
+["hello", ["hello", "world"]]
+</pre>
+
+<p>Evaluation is the most complex part of the interpretation process. When we evaluate, we look at an expression and check its value according to the <code>env</code> environment - implemented as a JS Dictionary. An environment is simply a mapping from a variable name to its value. </p>
+
+<p>In code, we impliment a finite number of predefined functions in the global environment as</p>
+
+<pre class="prettyprint linenums">
+var Operations = {
+'+'       : function(a, b) { return a + b; },
+'-'       : function(a, b) { return a - b;},
+'*'       : function(a, b) { return a * b; },
+'/'       : function(a, b) { return a / b; },
+'<'       : function(a, b) { return a < b; },
+'>'       : function(a, b) { return a > b; },
+'<='      : function(a, b) { return a <= b; },
+'>='      : function(a, b) { return a >= b; },
+'='       : function(a, b) { return a == b; },
+'or'      : function(a,b)  { return a||b;   },
+'cons'    : function(a, b) { return [a].concat(b); },
+'car'     : function(a)    { return (a.length !==0) ? a[0] : null; },
+'cdr'     : function(a)    { return (a.length>1) ? a.slice(1) : null; },
+'list'    : function()     { return Array.prototype.slice.call(arguments); },
+};
+</pre>
+
+<p>and impliment a local environment when the interpreter parses a <code>lambda</code> or <code>def</code> function.</p>
+
+<p>When we evaluate an expression, we check the expression&rsquo;s function and arguments. If an expression is prefixed by a <code>&#39;</code>, or the function being applied is the string QUOTE, we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.</p>
+
+<ol>
+<li>QUOTE - The value of (QUOTE A) is A</li>
+<li>CAR - The value of (CAR e) is the first element of e where e is defined as a non-empty list. i.e. (CAR (QUOTE (A B))) returns A</li>
+<li>CDR - The value of (CDR e) is the list of remaining elements of e when CAR of e is removed, where e is defined above. ie (CDR (QUOTE (A B))) returns B.</li>
+<li>CONS - The value of (CONS e1 e2) is the list that results from prefixing e1 onto e2. Thus, (CONS (QUOTE A) (QUOTE B)) returns the list (A B).</li>
+<li>EQUAL - The value of (EQUAL e1 e2) is true if e1 = e2 and false if otherwise. (EQUAL 1 2) returns false.</li>
+<li>ATOM - The value of (ATOM e1) is true if e1 is an atom and false if otherwise. (ATOM)</li>
+<li>COND - The value of (COND(e1 e1) &hellip; (pn en)) is the value of ei, where pi is the the first ofthe p&rsquo;s whose value is not NIL.</li>
+<li>DEFINE - The DEFINE function maps a variable to the given expression.</li>
+<li>LAMBDA - Lambda is a construct in the Micro-Lisp language which allows for the definition
+of anonymous functions.</li>
+<li>Operators - We also provide definitions for traditional boolean ( =, &gt;, ≥, &lt;, ≤&hellip;) and
+arithmetic operators (+, −, ∗, /&hellip;)</li>
+</ol>
+
+<p>An example of the case &lsquo;DEFINE&rsquo; is given below:</p>
+
+<pre class="prettyprint linenums">
+case "DEFINE":
+    [_, variable, exp] = x;
+    env.set(variable, evaluate(exp, env));
+</pre>
+
+<p>Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &#39;variable&rsquo; and its value to the argument expression (x[2])  evaluated with respect to the global enviornment.</p>
+
+<p>With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &ldquo;sample&rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.</p>
+
+<pre class="prettyprint linenums">> (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))
+null
+> (define map (lambda (f xs) (cond (= xs nil) nil (cons (f (car xs)) (map f (cdr xs))))))
+null
+> (map (lambda (x) (+ x 1)) (range 0 10))
+(1 2 3 4 5 6 7 8 9 10 null)
+> (map (lambda (x) (fac x)) (range 0 10))
+(1 1 2 6 24 120 720 5040 40320 362880 null)
+> (define fib (lambda (n) (cond (or (= n 0) (= n 1)) 1 (+ (fib (- n 1)) (fib (- n 2))))))
+null
+> (map (lambda (x) (fib x)) (range 0 10))
+(1 1 2 3 5 8 13 21 34 55 null)</pre>
+
+<p>Originally I had intended to also discuss preforming garbage collection on list based system in this post and implementing a turtle graphics module utilizing HTML5 canvas, but I think I will visit those topics at a later time. </p>
+
+  </div>
+  <br/>
+
+  <div class="navigation group">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+      </div>
+    </div>
+
+    </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-24453347-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,32 @@
+---
+layout: default
+---
+<div id="content">
+
+  {% for post in paginator.posts %}
+    <div class="main">
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+
+      <div class="main">{{post.content}}</div>
+
+      <div class="post-separator">&nbsp;</div>
+
+      <br/>
+    </div>
+  {% endfor %}
+
+  <div class="navigation group mti_font_element">
+    {% if paginator.previous_page %}
+      <div class="alignright">
+        <a href="{{ paginator.previous_page_path }}" class="previous">Newer entries »</a>
+      </div>
+    {% endif %}
+
+    {% if paginator.next_page %}
+      <div class="alignleft">
+        <a href="{{ paginator.next_page_path }}" class="next">« Older entries</a>
+      </div>
+    {% endif %}
+	</div>
+
+</div>

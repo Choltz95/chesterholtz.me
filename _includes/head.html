@@ -1,0 +1,34 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name = "viewport" content = "width = device-width">
+
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+  <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.baseurl }}">
+
+  {% if page and page.css %}
+    <!-- pull in post-specific css -->
+    <link rel='stylesheet' type='text/css' href='/css/{{ page.css }}.css' />
+  {% endif %}
+
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/blog/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
+
+  <!-- fonts.com -->
+  <script type="text/javascript">
+    // first, create the object that contains
+    // configuration variables
+    MTIConfig = {};
+
+    // next, add a variable that will control
+    // whether or not FOUT will be prevented
+    MTIConfig.EnableCustomFOUTHandler = true // true = prevent FOUT
+  </script>
+  <script type="text/javascript" src="http://fast.fonts.net/jsapi/3ac768d8-7a5c-4fd8-b377-f61d7f1760fa.js"></script>
+
+  <!-- prettify -->
+  <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/javascript/prettify.js"></script>
+</head>
