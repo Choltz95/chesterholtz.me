@@ -5,9 +5,10 @@
 }
 
 body {
-  font-family: "Gill Sans W01 Book";
+ /* font-family: "Gill Sans W01 Book";*/
+  font-family: 'Open Sans', sans-serif;
   margin: 0px;
-  font-size: 16px;
+  font-size: 13px;/*16px*/
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern";
   -webkit-font-feature-settings: "kern";
@@ -216,7 +217,8 @@ li a:hover { text-decoration: underline; }
 
 @media handheld, only screen and (max-width: 767px) {
   body {
-    font-family: "Gill Sans W01 Book";
+    /*font-family: "Gill Sans W01 Book";*/
+    font-family: 'Open Sans', sans-serif;
     font-size: 18px;
   }
 
