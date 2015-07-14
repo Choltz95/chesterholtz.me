@@ -6,17 +6,104 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Jul 2015 17:40:44 -0400</pubDate>
-    <lastBuildDate>Wed, 08 Jul 2015 17:40:44 -0400</lastBuildDate>
+    <pubDate>Tue, 14 Jul 2015 17:12:34 -0400</pubDate>
+    <lastBuildDate>Tue, 14 Jul 2015 17:12:34 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>Distrbuted computation with a raspberry pi cluster</title>
-        <description>&lt;p&gt;To write&lt;/p&gt;
+        <title>Distrbuted computation with a raspberry pi cluster(1)</title>
+        <description>&lt;p&gt;I have had a great deal of fun reading about the many adventures of the physicist Richard Feynman. I read his semi-autobiography &lt;em&gt;Surely You&amp;rsquo;re Joking Mr. Feynman!&lt;/em&gt; as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist Dany Hillis - coincidentally advised by 3 other famous computer scientists - on the Connection Machine. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the BBN Butterfly Processor - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. &lt;/p&gt;
+
+&lt;p&gt;In this project series I will be experimenting with various distributed algorithms for doing various things over a network. I will be examining the efficiency of computation which can be divided among multiple processors. Algorithms which I will be looking at include the canonical mergesort, matrix arithmetic, plotting a Delaunay Triangulation, and others.&lt;/p&gt;
+
+&lt;p&gt;For testing and comparing the parallelized and single-processor approaches for various aglorithms, I primarily consider one important metric: average computation time. These statistics are gathered during run time by using the high precision timers in the C++ chrono library, which allows the collection of timing data accurate on the order of nanoseconds. Testing itself is performed on three raspberry Pi B+ computers. These machines feature an 700 MHz single-core ARM1176JZF-S processor with 144 KB of Cache and 512 MB of RAM. The complete code for this project can be found on on my &lt;a href=&quot;https://github.com/Choltz95/distributedRPI&quot;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Merge sort is a classic sorting algorithm used to introduce the divide and conquer algorithm design paradigm. As such, it is known to parallelize well.&lt;/p&gt;
+
+&lt;p&gt;Recursively, mergesort processes an unsorted list of numbers by dividing the unsorted list into n sublists, each containing 1 element (a list of 1 element is considered sorted). It then repeatedly merges sublists to produce new sorted sublists until there is only 1 sublist remaining. This will be the sorted list. The following is a short walkthrough of the server-side code written for a distributed mergesort and the results of the comparison.&lt;/p&gt;
+
+&lt;p&gt;An general example is given below with some merge and split steps skipped to conserve space. 
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+Start       : 3--4--2--1--7--5--8--9--0--6
+Split       : 3--4--2--1--7  5--8--9--0--6
+Split       : 3  4  2  1  7  5  8  9  0  6
+Merge       : 3--4  1--2  5--7  8--9  0--6
+Merge       : 1--2--3--4  5--7--8--9  0--6
+Merge       : 0--1--2--3--4--5--6--7--8--9
+&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;I partition my initial unsorted array into n subarrays of equal size on the server. These subarrays will be passed to individual raspberry pi nodes to be sorted before being merged on the server. My breakarray() funtion intuitively takes the initial unsorted array and the number of processors on the network.
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+def breakarray(array, n): 
+    sectionlength = len(array)/n    #length of each section 
+    result = [] 
+    for i in range(n):
+        if i &amp;lt; n - 1:
+            result.append( array[ i * sectionlength : (i+1) * sectionlength ] )
+        #include all remaining elements for the last section 
+        else:
+            result.append( array[ i * sectionlength : ] )&lt;br&gt;
+    return result
+&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;Furthermore, setting up a simple network is quite simple. I make use of Python&amp;rsquo;s socket module to do this. I first provide host and port parameters and create an inet, streaming socket before binding the socket to local host and port.
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+HOST = &amp;#39;&amp;#39;
+PORT = 50007 
+s = socket.socket(socket.AF&lt;em&gt;INET, socket.SOCK&lt;/em&gt;STREAM) 
+print &amp;#39;Socket created&amp;#39;
+s.setsockopt(socket.SOL&lt;em&gt;SOCKET, socket.SO&lt;/em&gt;REUSEADDR, 1) 
+try:
+    s.bind((HOST, PORT))
+except socket.error as msg:
+    print &amp;#39;Bind failed. Error Code : &amp;#39; + str(msg[0]) + &amp;#39; Message &amp;#39; + msg&lt;a href=&quot;https://github.com/Choltz95/distributedRPI&quot;&gt;1&lt;/a&gt;
+    sys.exit()
+&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, I send and recieve the data in 4kb size chunks. Once sorted, the client sends its assigned subaray back to the server to be merged.
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+for i in range(procno - 1): # Converts array section into string to be sent
+    arraystring = repr(sections[i+1]) 
+    conn.sendto(arraystring, addr_list[i])  # Sends array string 
+print &amp;#39;Data sent, sorting array...&amp;#39;
+&lt;/pre&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+# Receives sorted sections from each client
+for i in range(procno - 1):
+    arraystring = &#39;&#39; 
+    print &#39;Receiving data from clients...&#39; 
+    while 1:
+        data = conn.recv(4096)  # Receives data in chunks 
+        arraystring += data # Adds data to array string 
+        if &#39;]&#39; in data: # When end of data is received
+            break
+
+    print &#39;Data received, merging arrays...&#39;    
+    array = ms.merge(array, eval(arraystring))  # Merges current array with section from client
+    print &#39;Arrays merged.&#39;
+&lt;/pre&gt;
+
+&lt;p&gt;Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output are given below:&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint linenums&quot;&gt;
+$ sudo python server.py 3 10000
+[DEBUG] Waiting for client...
+[DEBUG] connected to 192.168.1.2:50007
+[DEBUG] connected to 192.168.1.3:50007
+[DEBUG] Data sent, sorting array...
+[DEBUG] Array sorted.
+[DEBUG] Receiving data from clients...
+[DEBUG] Data Recieved, merging arrays...
+[DEBUG] Arrays merged.
+[DEBUG] Time taken to sort: 21.223145 seconds.
+&lt;/pre&gt;
+
+&lt;p&gt;This concludes the first part of this project series. Expect more updates comming soon.&lt;/p&gt;
 </description>
         <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
-        <link>http://chesterholtz.me/blog/post/rpi_distributed</link>
-        <guid isPermaLink="true">http://chesterholtz.me/blog/post/rpi_distributed</guid>
+        <link>http://chesterholtz.me/blog/post/rpi_distributed_1</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/rpi_distributed_1</guid>
         
         
         <category>uncategorized</category>
@@ -33,7 +120,7 @@
 
 &lt;p&gt;My previous website served as a portfolio to demonstrate my competence in several web technologies and frameworks, but grew to be quite bloated and unecessarily flashy. I decided to focus less on the website itself and instead to make a website which contained deep and meaningful content.&lt;/p&gt;
 
-&lt;p&gt;Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in.&lt;/p&gt;
+&lt;p&gt;Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in. I definitely do not expect this website to be visited frequently, and am primarily utilizing this blog to organize my thoughts and keep a well layed out map of projects and ideas I find interesting.&lt;/p&gt;
 </description>
         <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/personal_statement</link>
@@ -74,6 +161,8 @@ I created a simply visualization of fundamental properties of an evolving popula
       <item>
         <title>Micro Lisp interpreter and garbage collection</title>
         <description>&lt;p&gt;This past semester I have been rereading Gerald Sussman&amp;rsquo;s popular text: Structure and Interpretation of Computer Programs. I have worked on a lisp interpreter in JavaScript in the past inspired by the implementations of &lt;a href=&quot;https://en.wikipedia.org/wiki/Peter_Norvig&quot;&gt;Peter Norvig&lt;/a&gt; and &lt;a href=&quot;https://github.com/maryrosecook&quot;&gt;Mary Rose Cook&lt;/a&gt; - one that followed the 10 rules of &lt;a href=&quot;https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)&quot;&gt;John McCarthy&lt;/a&gt; detailed in his paper &lt;a href=&quot;http://www.cse.sc.edu/%7Emgv/csce330f13/micromanualLISP.pdf&quot;&gt;A Micro-Manual for Lisp - Not the whole Truth&lt;/a&gt;. This implementation is what will be discussed in this first blog post. In a future post, I may go into detail regarding my eventual reimplimintation of Micro Lisp and several garbage collection algorithms in C++.&lt;/p&gt;
+
+&lt;p&gt;LISP is family of programming languages first conceived in 1959 by John McCarthy. In LISP, computation is expressed as a function of one or more objects. Objects can be other functions, data types, or data structures. Despite its age, derivations of LISP such as Common Lisp, Clojure, and Scheme are the most commonly used programming languages for AI research and many other applications.&lt;/p&gt;
 
 &lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.&lt;/p&gt;
 

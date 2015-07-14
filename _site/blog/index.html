@@ -60,9 +60,96 @@
 
   
     <div class="main">
-      <h2><a href="/blog/post/rpi_distributed">Distrbuted computation with a raspberry pi cluster</a></h2>
+      <h2><a href="/blog/post/rpi_distributed_1">Distrbuted computation with a raspberry pi cluster(1)</a></h2>
 
-      <div class="main"><p>To write</p>
+      <div class="main"><p>I have had a great deal of fun reading about the many adventures of the physicist Richard Feynman. I read his semi-autobiography <em>Surely You&rsquo;re Joking Mr. Feynman!</em> as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist Dany Hillis - coincidentally advised by 3 other famous computer scientists - on the Connection Machine. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the BBN Butterfly Processor - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. </p>
+
+<p>In this project series I will be experimenting with various distributed algorithms for doing various things over a network. I will be examining the efficiency of computation which can be divided among multiple processors. Algorithms which I will be looking at include the canonical mergesort, matrix arithmetic, plotting a Delaunay Triangulation, and others.</p>
+
+<p>For testing and comparing the parallelized and single-processor approaches for various aglorithms, I primarily consider one important metric: average computation time. These statistics are gathered during run time by using the high precision timers in the C++ chrono library, which allows the collection of timing data accurate on the order of nanoseconds. Testing itself is performed on three raspberry Pi B+ computers. These machines feature an 700 MHz single-core ARM1176JZF-S processor with 144 KB of Cache and 512 MB of RAM. The complete code for this project can be found on on my <a href="https://github.com/Choltz95/distributedRPI">github</a></p>
+
+<p>Merge sort is a classic sorting algorithm used to introduce the divide and conquer algorithm design paradigm. As such, it is known to parallelize well.</p>
+
+<p>Recursively, mergesort processes an unsorted list of numbers by dividing the unsorted list into n sublists, each containing 1 element (a list of 1 element is considered sorted). It then repeatedly merges sublists to produce new sorted sublists until there is only 1 sublist remaining. This will be the sorted list. The following is a short walkthrough of the server-side code written for a distributed mergesort and the results of the comparison.</p>
+
+<p>An general example is given below with some merge and split steps skipped to conserve space. 
+<pre class="prettyprint linenums">
+Start       : 3--4--2--1--7--5--8--9--0--6
+Split       : 3--4--2--1--7  5--8--9--0--6
+Split       : 3  4  2  1  7  5  8  9  0  6
+Merge       : 3--4  1--2  5--7  8--9  0--6
+Merge       : 1--2--3--4  5--7--8--9  0--6
+Merge       : 0--1--2--3--4--5--6--7--8--9
+</pre></p>
+
+<p>I partition my initial unsorted array into n subarrays of equal size on the server. These subarrays will be passed to individual raspberry pi nodes to be sorted before being merged on the server. My breakarray() funtion intuitively takes the initial unsorted array and the number of processors on the network.
+<pre class="prettyprint linenums">
+def breakarray(array, n): 
+    sectionlength = len(array)/n    #length of each section 
+    result = [] 
+    for i in range(n):
+        if i &lt; n - 1:
+            result.append( array[ i * sectionlength : (i+1) * sectionlength ] )
+        #include all remaining elements for the last section 
+        else:
+            result.append( array[ i * sectionlength : ] )<br>
+    return result
+</pre></p>
+
+<p>Furthermore, setting up a simple network is quite simple. I make use of Python&rsquo;s socket module to do this. I first provide host and port parameters and create an inet, streaming socket before binding the socket to local host and port.
+<pre class="prettyprint linenums">
+HOST = &#39;&#39;
+PORT = 50007 
+s = socket.socket(socket.AF<em>INET, socket.SOCK</em>STREAM) 
+print &#39;Socket created&#39;
+s.setsockopt(socket.SOL<em>SOCKET, socket.SO</em>REUSEADDR, 1) 
+try:
+    s.bind((HOST, PORT))
+except socket.error as msg:
+    print &#39;Bind failed. Error Code : &#39; + str(msg[0]) + &#39; Message &#39; + msg<a href="https://github.com/Choltz95/distributedRPI">1</a>
+    sys.exit()
+</pre></p>
+
+<p>Finally, I send and recieve the data in 4kb size chunks. Once sorted, the client sends its assigned subaray back to the server to be merged.
+<pre class="prettyprint linenums">
+for i in range(procno - 1): # Converts array section into string to be sent
+    arraystring = repr(sections[i+1]) 
+    conn.sendto(arraystring, addr_list[i])  # Sends array string 
+print &#39;Data sent, sorting array...&#39;
+</pre></p>
+
+<pre class="prettyprint linenums">
+# Receives sorted sections from each client
+for i in range(procno - 1):
+    arraystring = '' 
+    print 'Receiving data from clients...' 
+    while 1:
+        data = conn.recv(4096)  # Receives data in chunks 
+        arraystring += data # Adds data to array string 
+        if ']' in data: # When end of data is received
+            break
+
+    print 'Data received, merging arrays...'    
+    array = ms.merge(array, eval(arraystring))  # Merges current array with section from client
+    print 'Arrays merged.'
+</pre>
+
+<p>Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output are given below:</p>
+
+<pre class="prettyprint linenums">
+$ sudo python server.py 3 10000
+[DEBUG] Waiting for client...
+[DEBUG] connected to 192.168.1.2:50007
+[DEBUG] connected to 192.168.1.3:50007
+[DEBUG] Data sent, sorting array...
+[DEBUG] Array sorted.
+[DEBUG] Receiving data from clients...
+[DEBUG] Data Recieved, merging arrays...
+[DEBUG] Arrays merged.
+[DEBUG] Time taken to sort: 21.223145 seconds.
+</pre>
+
+<p>This concludes the first part of this project series. Expect more updates comming soon.</p>
 </div>
 
       <div class="post-separator">&nbsp;</div>
@@ -81,7 +168,7 @@
 
 <p>My previous website served as a portfolio to demonstrate my competence in several web technologies and frameworks, but grew to be quite bloated and unecessarily flashy. I decided to focus less on the website itself and instead to make a website which contained deep and meaningful content.</p>
 
-<p>Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in.</p>
+<p>Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in. I definitely do not expect this website to be visited frequently, and am primarily utilizing this blog to organize my thoughts and keep a well layed out map of projects and ideas I find interesting.</p>
 </div>
 
       <div class="post-separator">&nbsp;</div>
@@ -116,6 +203,8 @@ I created a simply visualization of fundamental properties of an evolving popula
       <h2><a href="/blog/post/micro_lisp_interpreter">Micro Lisp interpreter and garbage collection</a></h2>
 
       <div class="main"><p>This past semester I have been rereading Gerald Sussman&rsquo;s popular text: Structure and Interpretation of Computer Programs. I have worked on a lisp interpreter in JavaScript in the past inspired by the implementations of <a href="https://en.wikipedia.org/wiki/Peter_Norvig">Peter Norvig</a> and <a href="https://github.com/maryrosecook">Mary Rose Cook</a> - one that followed the 10 rules of <a href="https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)">John McCarthy</a> detailed in his paper <a href="http://www.cse.sc.edu/%7Emgv/csce330f13/micromanualLISP.pdf">A Micro-Manual for Lisp - Not the whole Truth</a>. This implementation is what will be discussed in this first blog post. In a future post, I may go into detail regarding my eventual reimplimintation of Micro Lisp and several garbage collection algorithms in C++.</p>
+
+<p>LISP is family of programming languages first conceived in 1959 by John McCarthy. In LISP, computation is expressed as a function of one or more objects. Objects can be other functions, data types, or data structures. Despite its age, derivations of LISP such as Common Lisp, Clojure, and Scheme are the most commonly used programming languages for AI research and many other applications.</p>
 
 <p>My <a href="http://github.com/Choltz95/microlispjs">Micro Lisp</a> is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my <a href="http://github.com/Choltz95/microlispjs">github</a>, while one can test a deployed version <a href="http://littlelispjs.divshot.io/">here</a>. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.</p>
 

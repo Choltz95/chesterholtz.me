@@ -15,6 +15,6 @@ Along with computer science, I also have a love of physics and mathematics and I
 
 My previous website served as a portfolio to demonstrate my competence in several web technologies and frameworks, but grew to be quite bloated and unecessarily flashy. I decided to focus less on the website itself and instead to make a website which contained deep and meaningful content.
 
-Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in.
+Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in. I definitely do not expect this website to be visited frequently, and am primarily utilizing this blog to organize my thoughts and keep a well layed out map of projects and ideas I find interesting.
 
 [1]: http://www.hajim.rochester.edu/
