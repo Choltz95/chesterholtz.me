@@ -17,4 +17,20 @@ My previous website served as a portfolio to demonstrate my competence in severa
 
 Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in. I definitely do not expect this website to be visited frequently, and am primarily utilizing this blog to organize my thoughts and keep a well layed out map of projects and ideas I find interesting.
 
+On my previous website, I had a page devoted to my five favorite books. They are: 	
+
+ * [Gödel, Escher, Bach: An Eternal Golden Braid][2]
+
+ * [Do Androids Dream of Electric Sheep?][3]
+
+ * [Dune][4]
+
+ * [Surely You're Joking, Mr. Feynman!: Adventures of a Curious Character][5]
+
+ * [Lord of the Rings][6]
 [1]: http://www.hajim.rochester.edu/
+[2]: https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach
+[3]: https://en.wikipedia.org/wiki/Do_Androids_Dream_of_Electric_Sheep%3F
+[4]: https://en.wikipedia.org/wiki/Dune_(novel)
+[5]: https://en.wikipedia.org/wiki/Surely_You%27re_Joking,_Mr._Feynman!
+[6]: https://en.wikipedia.org/wiki/The_Lord_of_the_Rings

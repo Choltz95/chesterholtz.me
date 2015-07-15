@@ -62,7 +62,7 @@
     <div class="main">
       <h2><a href="/blog/post/rpi_distributed_1">Distrbuted computation with a raspberry pi cluster(1)</a></h2>
 
-      <div class="main"><p>I have had a great deal of fun reading about the many adventures of the physicist Richard Feynman. I read his semi-autobiography <em>Surely You&rsquo;re Joking Mr. Feynman!</em> as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist Dany Hillis - coincidentally advised by 3 other famous computer scientists - on the Connection Machine. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the BBN Butterfly Processor - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. </p>
+      <div class="main"><p>I have had a great deal of fun reading about the many adventures of the physicist <a href="https://en.wikipedia.org/wiki/Richard_Feynman">Richard Feynman</a>. I read his semi-autobiography <em>Surely You&rsquo;re Joking Mr. Feynman!</em> as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist <a href="https://en.wikipedia.org/wiki/Danny_Hillis">Dany Hillis</a> - coincidentally advised by 3 other famous computer scientists - on the <a href="https://en.wikipedia.org/wiki/Connection_Machine">Connection Machine</a> - a parallel arangement of multiple supercomputers. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the <a href="https://en.wikipedia.org/wiki/BBN_Butterfly">BBN Butterfly Processor</a> - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. </p>
 
 <p>In this project series I will be experimenting with various distributed algorithms for doing various things over a network. I will be examining the efficiency of computation which can be divided among multiple processors. Algorithms which I will be looking at include the canonical mergesort, matrix arithmetic, plotting a Delaunay Triangulation, and others.</p>
 
@@ -101,37 +101,37 @@ def breakarray(array, n):
 HOST = &#39;&#39;
 PORT = 50007 
 s = socket.socket(socket.AF<em>INET, socket.SOCK</em>STREAM) 
-print &#39;Socket created&#39;
+print &#39;[DEBUG] Socket created&#39;
 s.setsockopt(socket.SOL<em>SOCKET, socket.SO</em>REUSEADDR, 1) 
 try:
     s.bind((HOST, PORT))
 except socket.error as msg:
-    print &#39;Bind failed. Error Code : &#39; + str(msg[0]) + &#39; Message &#39; + msg<a href="https://github.com/Choltz95/distributedRPI">1</a>
+    print &#39;[ERROR] Bind failed. Error Code : &#39; + str(msg[0]) + &#39; Message &#39; + msg<a href="https://en.wikipedia.org/wiki/Richard_Feynman">1</a>
     sys.exit()
 </pre></p>
 
-<p>Finally, I send and recieve the data in 4kb size chunks. Once sorted, the client sends its assigned subaray back to the server to be merged.
+<p>Finally, I send and recieve the data in 4KB size chunks. Once sorted, the client sends its assigned subaray back to the server to be merged.
 <pre class="prettyprint linenums">
 for i in range(procno - 1): # Converts array section into string to be sent
     arraystring = repr(sections[i+1]) 
     conn.sendto(arraystring, addr_list[i])  # Sends array string 
-print &#39;Data sent, sorting array...&#39;
+print &#39;[DEBUG] Data sent, sorting array...&#39;
 </pre></p>
 
 <pre class="prettyprint linenums">
 # Receives sorted sections from each client
 for i in range(procno - 1):
     arraystring = '' 
-    print 'Receiving data from clients...' 
+    print '[DEBUG] Receiving data from clients...' 
     while 1:
         data = conn.recv(4096)  # Receives data in chunks 
         arraystring += data # Adds data to array string 
         if ']' in data: # When end of data is received
             break
 
-    print 'Data received, merging arrays...'    
+    print '[DEBUG] Data received, merging arrays...'    
     array = ms.merge(array, eval(arraystring))  # Merges current array with section from client
-    print 'Arrays merged.'
+    print '[DEBUG] Arrays merged.'
 </pre>
 
 <p>Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output are given below:</p>
@@ -169,6 +169,16 @@ $ sudo python server.py 3 10000
 <p>My previous website served as a portfolio to demonstrate my competence in several web technologies and frameworks, but grew to be quite bloated and unecessarily flashy. I decided to focus less on the website itself and instead to make a website which contained deep and meaningful content.</p>
 
 <p>Since I am not much of a writter, updates to the blog portion of this website will not be consistent, and will most likely be composed of technical reports of projects and research I am involved in. I definitely do not expect this website to be visited frequently, and am primarily utilizing this blog to organize my thoughts and keep a well layed out map of projects and ideas I find interesting.</p>
+
+<p>On my previous website, I had a page devoted to my five favorite books. They are:   </p>
+
+<ul>
+<li><p><a href="https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach">Gödel, Escher, Bach: An Eternal Golden Braid</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Do_Androids_Dream_of_Electric_Sheep%3F">Do Androids Dream of Electric Sheep?</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Dune_(novel)">Dune</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Surely_You%27re_Joking,_Mr._Feynman!">Surely You&rsquo;re Joking, Mr. Feynman!: Adventures of a Curious Character</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/The_Lord_of_the_Rings">Lord of the Rings</a></p></li>
+</ul>
 </div>
 
       <div class="post-separator">&nbsp;</div>
@@ -191,7 +201,47 @@ I created a simply visualization of fundamental properties of an evolving popula
     <div class="main">
       <h2><a href="/blog/post/event_driven_cartography">Evis - event driven cartography with the GDELT dataset</a></h2>
 
-      <div class="main"><p>To write</p>
+      <div class="main"><p>The progress on this project has been relatively slow, since i have been working on this project inconsistently. My interest in analysis of large data sets is due to my involvement in Professor Jiebo Luo&rsquo;s <a href="http://www.cs.rochester.edu/u/jluo/">VIStA (Visual Intelligence &amp; Social Multimedia Analytics) Research Group</a> as a research assistant. Currently, I am developing a web interface for the <a href="http://gdeltproject.org/">gdelt (Global Database of Events, Language, and Tone) dataset</a> while also preforming analysis and rendering a visualization of real-time chaotic events - natural disasters, violence against civilians, etc. - in the world. </p>
+
+<p>Gdelt is a continuously updated repository which gathers events from around the world since 1979 and indexes them according to various metrics. Every 15 minutes, GDELT scrapes various news sources for relavent data and current events to update its database with entries containing locations, times, descriptions and other relavent data.</p>
+
+<p>In testing, I use Python&rsquo;s matplotlib module with the basemap toolkit to plot data in real time and to literally draw correlations between events. Recently, GDELT was uploaded to google&rsquo;s bigquery which allows me to parse and analize over a quarter million events for free in seconds.</p>
+
+<p>For the final rendition, I plan writting the application in javascript to be renderable in a browser.</p>
+
+<p>The code is hosted on my <a href="https://github.com/Choltz95/Evis">github</a>, but is probably a little behind the current version as I am working on this project in a cloud vm.</p>
+
+<p>An example demonstrating the power of google bigquery is provided below (taken from google&rsquo;s cloud platform blog): when I run the following sql query against a databse containing a quarter billion rows a set of 37 entries representing the most significant events of the last 37 years is returned in only a few seconds. From there, I can download the data as a json file and parse it, drawing data onto a map to be interacted with, or simply examined.
+<pre class="prettyprint linenums">
+SELECT Year, Actor1Name, Actor2Name, Count FROM (
+SELECT Actor1Name, Actor2Name, Year, COUNT(*) Count, RANK() OVER(PARTITION BY YEAR ORDER BY Count DESC) rank
+FROM 
+(SELECT Actor1Name, Actor2Name,  Year FROM [gdelt-bq:full.events] WHERE Actor1Name &lt; Actor2Name and Actor1CountryCode != &#39;&#39; and Actor2CountryCode != &#39;&#39; and Actor1CountryCode!=Actor2CountryCode),  (SELECT Actor2Name Actor1Name, Actor1Name Actor2Name, Year FROM [gdelt-bq:full.events] WHERE Actor1Name &gt; Actor2Name  and Actor1CountryCode != &#39;&#39; and Actor2CountryCode != &#39;&#39; and Actor1CountryCode!=Actor2CountryCode),
+WHERE Actor1Name IS NOT null
+AND Actor2Name IS NOT null
+GROUP EACH BY 1, 2, 3
+HAVING Count &gt; 100
+)
+WHERE rank=1
+ORDER BY Year
+</pre></p>
+
+<pre class="prettyprint linenums">
+{"Year":"1979","Actor1Name":"CHINA","Actor2Name":"VIETNAM","Count":"2668"}
+{"Year":"1980","Actor1Name":"AFGHANISTAN","Actor2Name":"RUSSIA","Count":"3899"}
+{"Year":"1981","Actor1Name":"RUSSIA","Actor2Name":"UNITED STATES","Count":"3079"}
+{"Year":"1982","Actor1Name":"ISRAEL","Actor2Name":"LEBANON","Count":"4253"}
+{"Year":"1983","Actor1Name":"ISRAEL","Actor2Name":"LEBANON","Count":"4955"}
+...
+{"Year":"2012","Actor1Name":"CHINA","Actor2Name":"UNITED STATES","Count":"42231"}
+{"Year":"2013","Actor1Name":"RUSSIA","Actor2Name":"UNITED STATES","Count":"61191"}
+{"Year":"2014","Actor1Name":"RUSSIA","Actor2Name":"UKRAINE","Count":"120995"}
+{"Year":"2015","Actor1Name":"RUSSIA","Actor2Name":"UKRAINE","Count":"39236"}
+</pre>
+
+<p><img src="/images/map.png" alt="alt text" title="Example map"></p>
+
+<p>The biggest issue encountered is the free data limit. Since the goal for this project involves a real-time component, it is necessary to requery data from gdelt every update.  </p>
 </div>
 
       <div class="post-separator">&nbsp;</div>
