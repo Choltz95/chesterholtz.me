@@ -6,9 +6,28 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Jul 2015 13:22:00 -0400</pubDate>
-    <lastBuildDate>Thu, 16 Jul 2015 13:22:00 -0400</lastBuildDate>
+    <pubDate>Wed, 22 Jul 2015 22:03:36 -0400</pubDate>
+    <lastBuildDate>Wed, 22 Jul 2015 22:03:36 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Emergent Behavior Through Boids Simulation(1)</title>
+        <description>&lt;p&gt;Simulation of natural phenomena is something I have been interested in for a long time. In particular, simulating the aggregate moving and interaction of a group of individuals is something I have thought about ever since reading Michael Chriton&amp;rsquo;s &lt;a href=&quot;https://en.wikipedia.org/wiki/Prey_(novel)&quot;&gt;Prey&lt;/a&gt; and the main character&amp;rsquo;s PredPrey software. A few years ago a few friends and I wrote a program based upon the rules defined by Craig Reynolds regarding the behavior of birds engaged in flocking around a predator. Reynolds proposed this model of coordinated animal motion in 1986 and labled the individuals composing a simulated flock &amp;ldquo;Boids&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Essentially, the behavior of these Boids is subject to three fundamental rules: cohesion, separation and alignment. The beauty of Reynold&amp;rsquo;s model is the simplicity of these rules, and the resulting complexity of the Boid&amp;rsquo;s behavior. Reynold&amp;rsquo;s model gave rise to the idea of emergent behavior; complex interaction of individual agents adhering to a set of simple rules in an artificial intelligent simulation.&lt;/p&gt;
+
+&lt;p&gt;I coded this project in a weekend in 300 lines with the processing language and used the processing.js library to be able to present the boid rules in any browser. In predprey, each rule is implimented as a force vector and computed for each boid based upon the location (also a vector) of surrounding boids. Along with the canonical rules, I also implimented more advanced ones such as response to predators or an obstacle and goalfinding.&lt;/p&gt;
+
+&lt;p&gt;If I have time in the future, I would love to expand this program to encompass the third dimention as well as a &amp;ldquo;fourth&amp;rdquo; (color according to state). I also would hope to impliment a genetic algorithm to effectively have the boids &amp;ldquo;evolve&amp;rdquo; and develop behaviors other than the ones I decide.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 20 Jul 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/predprey_1</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/predprey_1</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
     
       <item>
         <title>Distrbuted computation with a raspberry pi cluster(1)</title>
@@ -101,7 +120,7 @@ $ sudo python server.py 3 10000
 
 &lt;p&gt;This concludes the first part of this project series. Expect more updates comming soon.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
+        <pubDate>Fri, 10 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/rpi_distributed_1</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/rpi_distributed_1</guid>
         

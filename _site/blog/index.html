@@ -60,6 +60,23 @@
 
   
     <div class="main">
+      <h2><a href="/blog/post/predprey_1">Emergent Behavior Through Boids Simulation(1)</a></h2>
+
+      <div class="main"><p>Simulation of natural phenomena is something I have been interested in for a long time. In particular, simulating the aggregate moving and interaction of a group of individuals is something I have thought about ever since reading Michael Chriton&rsquo;s <a href="https://en.wikipedia.org/wiki/Prey_(novel)">Prey</a> and the main character&rsquo;s PredPrey software. A few years ago a few friends and I wrote a program based upon the rules defined by Craig Reynolds regarding the behavior of birds engaged in flocking around a predator. Reynolds proposed this model of coordinated animal motion in 1986 and labled the individuals composing a simulated flock &ldquo;Boids&rdquo;.</p>
+
+<p>Essentially, the behavior of these Boids is subject to three fundamental rules: cohesion, separation and alignment. The beauty of Reynold&rsquo;s model is the simplicity of these rules, and the resulting complexity of the Boid&rsquo;s behavior. Reynold&rsquo;s model gave rise to the idea of emergent behavior; complex interaction of individual agents adhering to a set of simple rules in an artificial intelligent simulation.</p>
+
+<p>I coded this project in a weekend in 300 lines with the processing language and used the processing.js library to be able to present the boid rules in any browser. In predprey, each rule is implimented as a force vector and computed for each boid based upon the location (also a vector) of surrounding boids. Along with the canonical rules, I also implimented more advanced ones such as response to predators or an obstacle and goalfinding.</p>
+
+<p>If I have time in the future, I would love to expand this program to encompass the third dimention as well as a &ldquo;fourth&rdquo; (color according to state). I also would hope to impliment a genetic algorithm to effectively have the boids &ldquo;evolve&rdquo; and develop behaviors other than the ones I decide.</p>
+</div>
+
+      <div class="post-separator">&nbsp;</div>
+
+      <br/>
+    </div>
+  
+    <div class="main">
       <h2><a href="/blog/post/rpi_distributed_1">Distrbuted computation with a raspberry pi cluster(1)</a></h2>
 
       <div class="main"><p>I have had a great deal of fun reading about the many adventures of the physicist <a href="https://en.wikipedia.org/wiki/Richard_Feynman">Richard Feynman</a>. I read his semi-autobiography <em>Surely You&rsquo;re Joking Mr. Feynman!</em> as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist <a href="https://en.wikipedia.org/wiki/Danny_Hillis">Dany Hillis</a> - coincidentally advised by 3 other famous computer scientists - on the <a href="https://en.wikipedia.org/wiki/Connection_Machine">Connection Machine</a> - a parallel arangement of multiple supercomputers. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the <a href="https://en.wikipedia.org/wiki/BBN_Butterfly">BBN Butterfly Processor</a> - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. </p>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name = "viewport" content = "width = device-width">
+
+  <title>Emergent Behavior Through Boids Simulation(1)</title>
+  <meta name="description" content="Simulation of natural phenomena is something I have been interested in for a long time. In particular, simulating the aggregate moving and interaction of a g...">
+
+  <link rel="stylesheet" href="/css/blog.css">
+
+  
+
+  <link rel="canonical" href="http://chesterholtz.me/blog/post/predprey_1">
+  <link rel="alternate" type="application/rss+xml" title="Chester Holtz" href="http://chesterholtz.me/blog/feed.xml" />
+
+  <!-- fonts.com -->
+  <script type="text/javascript">
+    // first, create the object that contains
+    // configuration variables
+    MTIConfig = {};
+
+    // next, add a variable that will control
+    // whether or not FOUT will be prevented
+    MTIConfig.EnableCustomFOUTHandler = true // true = prevent FOUT
+  </script>
+  <script type="text/javascript" src="http://fast.fonts.net/jsapi/3ac768d8-7a5c-4fd8-b377-f61d7f1760fa.js"></script>
+
+  <!-- prettify -->
+  <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/javascript/prettify.js"></script>
+</head>
+
+
+  <body onload="prettyPrint()">
+
+    <div id="container" class="group">
+
+  <h1>
+    <a class="site-title" href="/blog/">Chester Holtz</a>
+  </h1>
+
+  <div class="navigation-links">
+    <a href="/">About</a>
+    <span id="desktop-only">
+      &nbsp;
+      <a href="/blog/archive.html">Archive</a>
+      &nbsp;
+      <a href="/blog/feed.xml">RSS</a>
+    </span>
+  </div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <div id="content" class="group">
+
+  <header class="post-header">
+    <h2 class="post-title"><a href="">Emergent Behavior Through Boids Simulation(1)</a></h1>
+  </header>
+
+  <div class="main">
+    <p>Simulation of natural phenomena is something I have been interested in for a long time. In particular, simulating the aggregate moving and interaction of a group of individuals is something I have thought about ever since reading Michael Chriton&rsquo;s <a href="https://en.wikipedia.org/wiki/Prey_(novel)">Prey</a> and the main character&rsquo;s PredPrey software. A few years ago a few friends and I wrote a program based upon the rules defined by Craig Reynolds regarding the behavior of birds engaged in flocking around a predator. Reynolds proposed this model of coordinated animal motion in 1986 and labled the individuals composing a simulated flock &ldquo;Boids&rdquo;.</p>
+
+<p>Essentially, the behavior of these Boids is subject to three fundamental rules: cohesion, separation and alignment. The beauty of Reynold&rsquo;s model is the simplicity of these rules, and the resulting complexity of the Boid&rsquo;s behavior. Reynold&rsquo;s model gave rise to the idea of emergent behavior; complex interaction of individual agents adhering to a set of simple rules in an artificial intelligent simulation.</p>
+
+<p>I coded this project in a weekend in 300 lines with the processing language and used the processing.js library to be able to present the boid rules in any browser. In predprey, each rule is implimented as a force vector and computed for each boid based upon the location (also a vector) of surrounding boids. Along with the canonical rules, I also implimented more advanced ones such as response to predators or an obstacle and goalfinding.</p>
+
+<p>If I have time in the future, I would love to expand this program to encompass the third dimention as well as a &ldquo;fourth&rdquo; (color according to state). I also would hope to impliment a genetic algorithm to effectively have the boids &ldquo;evolve&rdquo; and develop behaviors other than the ones I decide.</p>
+
+  </div>
+  <br/>
+
+  <div class="navigation group">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+      </div>
+    </div>
+
+    </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-24453347-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>
