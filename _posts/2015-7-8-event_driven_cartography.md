@@ -33,7 +33,7 @@ WHERE rank=1
 ORDER BY Year
 </pre>
 
-<pre class="prettyprint linenums">
+<pre class="prettyprint">
 {"Year":"1979","Actor1Name":"CHINA","Actor2Name":"VIETNAM","Count":"2668"}
 {"Year":"1980","Actor1Name":"AFGHANISTAN","Actor2Name":"RUSSIA","Count":"3899"}
 {"Year":"1981","Actor1Name":"RUSSIA","Actor2Name":"UNITED STATES","Count":"3079"}

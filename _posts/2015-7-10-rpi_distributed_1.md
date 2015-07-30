@@ -79,9 +79,9 @@ for i in range(procno - 1):
 	print '[DEBUG] Arrays merged.'
 </pre>
 
-Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output are given below:
+Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output is given below:
 
-<pre class="prettyprint linenums">
+<pre class="prettyprint">
 $ sudo python server.py 3 10000
 [DEBUG] Waiting for client...
 [DEBUG] connected to 192.168.1.2:50007

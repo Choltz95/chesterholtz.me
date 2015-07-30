@@ -11,7 +11,7 @@ This past semester I have been rereading Gerald Sussman's popular text: Structur
 
 LISP is family of programming languages first conceived in 1959 by John McCarthy. In LISP, computation is expressed as a function of one or more objects. Objects can be other functions, data types, or data structures. Despite its age, derivations of LISP such as Common Lisp, Clojure, and Scheme are the most commonly used programming languages for AI research and many other applications.
 
-My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 150 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.
+My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.
 
 There are two important parts to consider when writting an interpreter: `parsing` and `evaluation`. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
 
@@ -35,7 +35,8 @@ Atoms are collections of letters, digits or other characters not otherwise defin
 
 Parsing a Lisp S-Expression is quite simple. First, parse() is called with a character string input representing the program. to be interpreted. We then tokenize this input to get a list of tokens and pass this list into read_from to assemble the AST. We shift through elements of the list one at a time. If the token at the 0th indice is a '(', we instantiate a list of S-Expressions and recursively add to that list until we encounter a matching ')'. The parse() logic is given below.
 
-<pre class="prettyprint linenums">function parse(input) {
+<pre class="prettyprint linenums">
+function parse(input) {
   return read_from(tokenize(input));
 }
 
@@ -60,11 +61,13 @@ function read_from(tokens) {
 
 Below is an example of input, and the resulting output of parsing the Lisp S-Expression (hello (hello world)).
 
-<pre class="prettyprint linenums">>tokenize('(hello (hello world))')
+<pre class="prettyprint">
+>tokenize('(hello (hello world))')
 ["(", "hello", "(", "hello", "world", ")", ")"]
 </pre>
 
-<pre class="prettyprint linenums">>parse('(hello (hello world))')
+<pre class="prettyprint">
+>parse('(hello (hello world))')
 ["hello", ["hello", "world"]]
 </pre>
 
@@ -120,18 +123,16 @@ Here, we switch over the first token x\[0\], and assuming that the next token x\
 
 With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing "sample" into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.
 
-<pre class="prettyprint linenums">> (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))
+<pre class="prettyprint">
+> (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))
 null
 > (define map (lambda (f xs) (cond (= xs nil) nil (cons (f (car xs)) (map f (cdr xs))))))
 null
-> (map (lambda (x) (+ x 1)) (range 0 10))
-(1 2 3 4 5 6 7 8 9 10 null)
-> (map (lambda (x) (fac x)) (range 0 10))
-(1 1 2 6 24 120 720 5040 40320 362880 null)
 > (define fib (lambda (n) (cond (or (= n 0) (= n 1)) 1 (+ (fib (- n 1)) (fib (- n 2))))))
 null
 > (map (lambda (x) (fib x)) (range 0 10))
-(1 1 2 3 5 8 13 21 34 55 null)</pre>
+(1 1 2 3 5 8 13 21 34 55 null)
+</pre>
 
 Originally I had intended to also discuss preforming garbage collection on list based system in this post and implementing a turtle graphics module utilizing HTML5 canvas, but I think I will visit those topics at a later time. 
 
