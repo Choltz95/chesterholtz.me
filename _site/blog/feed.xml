@@ -6,9 +6,22 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Jul 2015 21:51:19 -0500</pubDate>
-    <lastBuildDate>Tue, 28 Jul 2015 21:51:19 -0500</lastBuildDate>
+    <pubDate>Mon, 10 Aug 2015 02:58:55 -0400</pubDate>
+    <lastBuildDate>Mon, 10 Aug 2015 02:58:55 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Image Estimation with Finite Polygons</title>
+        <description>&lt;p&gt;&lt;a href=&quot;http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/&quot;&gt;Richard Alsing&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 10 Aug 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/image_estimation</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/image_estimation</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
     
       <item>
         <title>Emergent Behavior Through Boids Simulation(1)</title>
@@ -61,11 +74,11 @@ void separate (ArrayList&lt;Boid&gt; boids) {
 }
 &lt;/pre&gt;
 
-&lt;p&gt;Boids is an interesting little program that serves as the initial example of emergent behavior from three simple rules. For fun, I added a little predator that the boids flee from. Although there are few applications of these kinds of simulations, they are entertaining and fun to watch.&lt;/p&gt;
+&lt;p&gt;Boids is an interesting little program that serves as the initial example of emergent behavior from three simple rules. For fun, I added a little predator that the boids flee from. Although there are few applications of these kinds of simulations, they are fun to code and entertaining to watch.&lt;/p&gt;
 
 &lt;p&gt;If I have time in the future, I would love to expand this program to encompass the third dimention and I also would like to impliment a genetic algorithm to effectively have the boids &amp;ldquo;evolve&amp;rdquo; and develop behaviors other than the ones I decide.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 20 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Mon, 20 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/predprey_1</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/predprey_1</guid>
         
@@ -165,7 +178,7 @@ $ sudo python server.py 3 10000
 
 &lt;p&gt;This concludes the first part of this project series. Expect more updates comming soon.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 10 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Fri, 10 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/rpi_distributed_1</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/rpi_distributed_1</guid>
         
@@ -196,7 +209,7 @@ $ sudo python server.py 3 10000
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/The_Lord_of_the_Rings&quot;&gt;Lord of the Rings&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Thu, 09 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/personal_statement</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/personal_statement</guid>
         
@@ -210,21 +223,9 @@ $ sudo python server.py 3 10000
         <description>&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Moran_process&quot;&gt;Moran Process&lt;/a&gt; is a simple stochastic process used to describe finite populations[wikipedia].
 I created a simply visualization of fundamental properties of an evolving population. Since color can be represented as a 6-digit hexadecimal number, we can generalize color to be representative of an agents DNA, and preform operations representing mutation, inheritence, selection, and crossover by altering the color of the agent.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 09 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Thu, 09 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/finite_population_visualization</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/finite_population_visualization</guid>
-        
-        
-        <category>uncategorized</category>
-        
-      </item>
-    
-      <item>
-        <title>GA Based Image Compression</title>
-        <description></description>
-        <pubDate>Thu, 09 Jul 2015 00:00:00 -0500</pubDate>
-        <link>http://chesterholtz.me/blog/post/ga_compression</link>
-        <guid isPermaLink="true">http://chesterholtz.me/blog/post/ga_compression</guid>
         
         
         <category>uncategorized</category>
@@ -275,7 +276,7 @@ ORDER BY Year
 
 &lt;p&gt;The biggest issue encountered is the free data limit. Since the goal for this project involves a real-time component, it is necessary to requery data from gdelt every update.  &lt;/p&gt;
 </description>
-        <pubDate>Wed, 08 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Wed, 08 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/event_driven_cartography</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/event_driven_cartography</guid>
         
@@ -417,7 +418,7 @@ null
 
 &lt;p&gt;Originally I had intended to also discuss preforming garbage collection on list based system in this post and implementing a turtle graphics module utilizing HTML5 canvas, but I think I will visit those topics at a later time. &lt;/p&gt;
 </description>
-        <pubDate>Tue, 07 Jul 2015 00:00:00 -0500</pubDate>
+        <pubDate>Tue, 07 Jul 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/micro_lisp_interpreter</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/micro_lisp_interpreter</guid>
         
