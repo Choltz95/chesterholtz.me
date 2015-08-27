@@ -41,7 +41,7 @@ for (y=0; y < target_image_height; y++) {
 }
 </pre>
 
-I think I am done for now with this project, but it would be interesting to experiment with other metrics of image similarity. I noticed github's own document similarity metric includes images. It might be fun to look up what algorithm they use. I uncleded some useful links on the github page as starting points for reading.
+I think I am done for now with this project, but it would be interesting to experiment with other metrics of image similarity. I noticed github's own document similarity metric includes images. It might be fun to look up what algorithm they use. I incleded some useful links on the github page as starting points for reading.
 
 [1]: http://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/
 [2]: https://github.com/Choltz95/image_estimation
