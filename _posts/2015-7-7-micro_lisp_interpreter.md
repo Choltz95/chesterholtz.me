@@ -13,7 +13,7 @@ LISP is family of programming languages first conceived in 1959 by John McCarthy
 
 An interpreter is a program that evaluates instructions written in a programming langauge. In contrast to a compiler, an interpreter remains present for the durration of code execution. In general, there are three fundamental phases of interpretation - tokenization, parsing, and evaluation.
 
-My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.
+My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally as there might be some features - like multiline coding - that are only supported in the current version on github.
 
 The two primary parts of interpretation I focused on when writting my Lisp interpreter where the `parsing` and `evaluation` of code. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
 
@@ -123,7 +123,7 @@ case "DEFINE":
 
 Here, we switch over the first token x\[0\], and assuming that the next token x\[1\] is an atom, we set a new indice in the local environment to the variable name 'variable' and its value to the argument expression (x\[2\]) recursively evaluated with respect to the global enviornment.
 
-With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing "sample" into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.
+With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing "sample" into the interpreter prompt, a number of different examples are presented with the most advanced being the recursive application of the fibonacci function onto a range of numbers.
 
 <pre class="prettyprint">
 > (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))

@@ -6,13 +6,14 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Sep 2015 23:57:06 -0400</pubDate>
-    <lastBuildDate>Wed, 02 Sep 2015 23:57:06 -0400</lastBuildDate>
+    <pubDate>Thu, 03 Sep 2015 00:05:38 -0400</pubDate>
+    <lastBuildDate>Thu, 03 Sep 2015 00:05:38 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>Gale-Shapely Algorithm and the Stable Marriage Problem</title>
-        <description></description>
+        <description>&lt;p&gt;to write&lt;/p&gt;
+</description>
         <pubDate>Fri, 28 Aug 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/stable_matching</link>
         <guid isPermaLink="true">http://chesterholtz.me/blog/post/stable_matching</guid>
@@ -341,7 +342,7 @@ ORDER BY Year
 
 &lt;p&gt;An interpreter is a program that evaluates instructions written in a programming langauge. In contrast to a compiler, an interpreter remains present for the durration of code execution. In general, there are three fundamental phases of interpretation - tokenization, parsing, and evaluation.&lt;/p&gt;
 
-&lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.&lt;/p&gt;
+&lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally as there might be some features - like multiline coding - that are only supported in the current version on github.&lt;/p&gt;
 
 &lt;p&gt;The two primary parts of interpretation I focused on when writting my Lisp interpreter where the &lt;code&gt;parsing&lt;/code&gt; and &lt;code&gt;evaluation&lt;/code&gt; of code. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
 
@@ -453,7 +454,7 @@ case &quot;DEFINE&quot;:
 
 &lt;p&gt;Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &amp;#39;variable&amp;rsquo; and its value to the argument expression (x[2]) recursively evaluated with respect to the global enviornment.&lt;/p&gt;
 
-&lt;p&gt;With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &amp;ldquo;sample&amp;rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.&lt;/p&gt;
+&lt;p&gt;With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &amp;ldquo;sample&amp;rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being the recursive application of the fibonacci function onto a range of numbers.&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;
 &gt; (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))

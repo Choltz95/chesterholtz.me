@@ -62,7 +62,8 @@
     <div class="main">
       <h2><a href="/blog/post/stable_matching">Gale-Shapely Algorithm and the Stable Marriage Problem</a></h2>
 
-      <div class="main"></div>
+      <div class="main"><p>to write</p>
+</div>
 
       <div class="post-separator">&nbsp;</div>
 
@@ -377,7 +378,7 @@ ORDER BY Year
 
 <p>An interpreter is a program that evaluates instructions written in a programming langauge. In contrast to a compiler, an interpreter remains present for the durration of code execution. In general, there are three fundamental phases of interpretation - tokenization, parsing, and evaluation.</p>
 
-<p>My <a href="http://github.com/Choltz95/microlispjs">Micro Lisp</a> is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my <a href="http://github.com/Choltz95/microlispjs">github</a>, while one can test a deployed version <a href="http://littlelispjs.divshot.io/">here</a>. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.</p>
+<p>My <a href="http://github.com/Choltz95/microlispjs">Micro Lisp</a> is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my <a href="http://github.com/Choltz95/microlispjs">github</a>, while one can test a deployed version <a href="http://littlelispjs.divshot.io/">here</a>. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally as there might be some features - like multiline coding - that are only supported in the current version on github.</p>
 
 <p>The two primary parts of interpretation I focused on when writting my Lisp interpreter where the <code>parsing</code> and <code>evaluation</code> of code. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.</p>
 
@@ -489,7 +490,7 @@ case "DEFINE":
 
 <p>Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &#39;variable&rsquo; and its value to the argument expression (x[2]) recursively evaluated with respect to the global enviornment.</p>
 
-<p>With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &ldquo;sample&rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.</p>
+<p>With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &ldquo;sample&rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being the recursive application of the fibonacci function onto a range of numbers.</p>
 
 <pre class="prettyprint">
 > (define range (lambda (a b) (cond (= a b) (quote ()) (cons a (range (+ a 1) b)))))
