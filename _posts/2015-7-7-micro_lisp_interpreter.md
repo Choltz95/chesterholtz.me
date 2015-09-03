@@ -11,13 +11,15 @@ This past semester I have been rereading Gerald Sussman's popular text: Structur
 
 LISP is family of programming languages first conceived in 1959 by John McCarthy. In LISP, computation is expressed as a function of one or more objects. Objects can be other functions, data types, or data structures. Despite its age, derivations of LISP such as Common Lisp, Clojure, and Scheme are the most commonly used programming languages for AI research and many other applications.
 
+An interpreter is a program that evaluates instructions written in a programming langauge. In contrast to a compiler, an interpreter remains present for the durration of code execution. In general, there are three fundamental phases of interpretation - tokenization, parsing, and evaluation.
+
 My [Micro Lisp][3] is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my [github][3], while one can test a deployed version [here][4]. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.
 
-There are two important parts to consider when writting an interpreter: `parsing` and `evaluation`. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
+The two primary parts of interpretation I focused on when writting my Lisp interpreter where the `parsing` and `evaluation` of code. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.
 
-Traditionally, the parsing process is separated into two parts: the `tokenizer` and the `AST assembler`. 
+Traditionally, the semantic parsing process is separated into two parts: the `tokenization` and the assembling of the `AST`. 
 
-The tokenizer demarcates a string of input characters into `tokens` before passing them on to be assembled into an AST. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.
+The tokenizer demarcates a string of input characters into `tokens` before passing them on to be assembled into an AST - which will be defined later. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.
 
 We tokenize by taking advantage of JavaScript's `replace()` and `split()` functions to take a character string input, add whitespace around each parentheses, and split the result by whitespace to get a JavaScript list of tokens. tokenize() is given below.
 
@@ -85,18 +87,18 @@ var Operations = {
 '>'       : function(a, b) { return a > b; },
 '<='      : function(a, b) { return a <= b; },
 '>='      : function(a, b) { return a >= b; },
-'='       : function(a, b) { return a == b; },
-'or'      : function(a,b)  { return a||b;   },
-'cons'    : function(a, b) { return [a].concat(b); },
-'car'     : function(a)    { return (a.length !==0) ? a[0] : null; },
-'cdr'     : function(a)    { return (a.length>1) ? a.slice(1) : null; },
-'list'    : function()     { return Array.prototype.slice.call(arguments); },
+'='      : function(a, b) { return a == b; },
+'or'     : function(a,b)  { return a||b;   },
+'cons'   : function(a, b) { return [a].concat(b); },
+'car'    : function(a)    { return (a.length !==0) ? a[0] : null; },
+'cdr'    : function(a)    { return (a.length>1) ? a.slice(1) : null; },
+'list'   : function()     { return Array.prototype.slice.call(arguments); },
 };
 </pre>
 
-and impliment a local environment when the interpreter parses a `lambda` or `def` function.
+and impliment a second environment - or symbolic table when the interpreter parses a `lambda` or `def` function. This second environment typically contains information pertaining to expressions and variables such as their scope or type.
 
-When we evaluate an expression, we check the expression's function and arguments. If an expression is prefixed by a `'`, or the function being applied is the string QUOTE, we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.
+When we evaluate an expression, we check the expression's function and arguments. If an expression is prefixed by a `'`, or the function being applied is the string "QUOTE", we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.
 
 1. QUOTE - The value of (QUOTE A) is A
 2. CAR - The value of (CAR e) is the first element of e where e is defined as a non-empty list. i.e. (CAR (QUOTE (A B))) returns A
@@ -119,7 +121,7 @@ case "DEFINE":
     env.set(variable, evaluate(exp, env));
 </pre>
 
-Here, we switch over the first token x\[0\], and assuming that the next token x\[1\] is an atom, we set a new indice in the local environment to the variable name 'variable' and its value to the argument expression (x\[2\])  evaluated with respect to the global enviornment.
+Here, we switch over the first token x\[0\], and assuming that the next token x\[1\] is an atom, we set a new indice in the local environment to the variable name 'variable' and its value to the argument expression (x\[2\]) recursively evaluated with respect to the global enviornment.
 
 With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing "sample" into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.
 

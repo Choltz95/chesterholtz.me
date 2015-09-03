@@ -6,9 +6,21 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Aug 2015 07:53:30 -0400</pubDate>
-    <lastBuildDate>Tue, 18 Aug 2015 07:53:30 -0400</lastBuildDate>
+    <pubDate>Wed, 02 Sep 2015 23:57:06 -0400</pubDate>
+    <lastBuildDate>Wed, 02 Sep 2015 23:57:06 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Gale-Shapely Algorithm and the Stable Marriage Problem</title>
+        <description></description>
+        <pubDate>Fri, 28 Aug 2015 00:00:00 -0400</pubDate>
+        <link>http://chesterholtz.me/blog/post/stable_matching</link>
+        <guid isPermaLink="true">http://chesterholtz.me/blog/post/stable_matching</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
     
       <item>
         <title>Image Estimation with Finite Polygons</title>
@@ -48,7 +60,7 @@ for (y=0; y &lt; target_image_height; y++) {
 }
 &lt;/pre&gt;
 
-&lt;p&gt;I think I am done for now with this project, but it would be interesting to experiment with other metrics of image similarity. I noticed github&amp;rsquo;s own document similarity metric includes images. It might be fun to look up what algorithm they use. I incleded some useful links on the github page as starting points for reading.&lt;/p&gt;
+&lt;p&gt;I think I am done for now with this project, but it would be interesting to experiment with other metrics of image similarity. I noticed github&amp;rsquo;s own document similarity metric includes images. It might be fun to look up what algorithm they use. I included some useful links on the github page as starting points for reading.&lt;/p&gt;
 </description>
         <pubDate>Mon, 10 Aug 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/image_estimation</link>
@@ -327,13 +339,15 @@ ORDER BY Year
 
 &lt;p&gt;LISP is family of programming languages first conceived in 1959 by John McCarthy. In LISP, computation is expressed as a function of one or more objects. Objects can be other functions, data types, or data structures. Despite its age, derivations of LISP such as Common Lisp, Clojure, and Scheme are the most commonly used programming languages for AI research and many other applications.&lt;/p&gt;
 
+&lt;p&gt;An interpreter is a program that evaluates instructions written in a programming langauge. In contrast to a compiler, an interpreter remains present for the durration of code execution. In general, there are three fundamental phases of interpretation - tokenization, parsing, and evaluation.&lt;/p&gt;
+
 &lt;p&gt;My &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;Micro Lisp&lt;/a&gt; is an interpreter that supports function invocation, lambdas, lets, ifs, numbers, strings, a few JavaScript library functions, and lists. I wrote it over a weekend in about 200 lines of JavaScript, and also included a number of simple and more complex test cases. The code for the project can be found on my &lt;a href=&quot;http://github.com/Choltz95/microlispjs&quot;&gt;github&lt;/a&gt;, while one can test a deployed version &lt;a href=&quot;http://littlelispjs.divshot.io/&quot;&gt;here&lt;/a&gt;. It is recommended, however, to clone yourself a copy directly from the repository and open index.html in your browser locally.&lt;/p&gt;
 
-&lt;p&gt;There are two important parts to consider when writting an interpreter: &lt;code&gt;parsing&lt;/code&gt; and &lt;code&gt;evaluation&lt;/code&gt;. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
+&lt;p&gt;The two primary parts of interpretation I focused on when writting my Lisp interpreter where the &lt;code&gt;parsing&lt;/code&gt; and &lt;code&gt;evaluation&lt;/code&gt; of code. When we parse a Lisp expression, we take the code typed by the programmer and transform  it into a representation that we can traverse and evaluate. Evaluation refers to the procedure of processing this structure according to the symantic rules of Lisp and returning a result.&lt;/p&gt;
 
-&lt;p&gt;Traditionally, the parsing process is separated into two parts: the &lt;code&gt;tokenizer&lt;/code&gt; and the &lt;code&gt;AST assembler&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Traditionally, the semantic parsing process is separated into two parts: the &lt;code&gt;tokenization&lt;/code&gt; and the assembling of the &lt;code&gt;AST&lt;/code&gt;. &lt;/p&gt;
 
-&lt;p&gt;The tokenizer demarcates a string of input characters into &lt;code&gt;tokens&lt;/code&gt; before passing them on to be assembled into an AST. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.&lt;/p&gt;
+&lt;p&gt;The tokenizer demarcates a string of input characters into &lt;code&gt;tokens&lt;/code&gt; before passing them on to be assembled into an AST - which will be defined later. For Micro Lisp, tokens consist of parentheses, symbols, and numbers.&lt;/p&gt;
 
 &lt;p&gt;We tokenize by taking advantage of JavaScript&amp;rsquo;s &lt;code&gt;replace()&lt;/code&gt; and &lt;code&gt;split()&lt;/code&gt; functions to take a character string input, add whitespace around each parentheses, and split the result by whitespace to get a JavaScript list of tokens. tokenize() is given below.&lt;/p&gt;
 
@@ -401,18 +415,18 @@ var Operations = {
 &#39;&gt;&#39;       : function(a, b) { return a &gt; b; },
 &#39;&lt;=&#39;      : function(a, b) { return a &lt;= b; },
 &#39;&gt;=&#39;      : function(a, b) { return a &gt;= b; },
-&#39;=&#39;       : function(a, b) { return a == b; },
-&#39;or&#39;      : function(a,b)  { return a||b;   },
-&#39;cons&#39;    : function(a, b) { return [a].concat(b); },
-&#39;car&#39;     : function(a)    { return (a.length !==0) ? a[0] : null; },
-&#39;cdr&#39;     : function(a)    { return (a.length&gt;1) ? a.slice(1) : null; },
-&#39;list&#39;    : function()     { return Array.prototype.slice.call(arguments); },
+&#39;=&#39;      : function(a, b) { return a == b; },
+&#39;or&#39;     : function(a,b)  { return a||b;   },
+&#39;cons&#39;   : function(a, b) { return [a].concat(b); },
+&#39;car&#39;    : function(a)    { return (a.length !==0) ? a[0] : null; },
+&#39;cdr&#39;    : function(a)    { return (a.length&gt;1) ? a.slice(1) : null; },
+&#39;list&#39;   : function()     { return Array.prototype.slice.call(arguments); },
 };
 &lt;/pre&gt;
 
-&lt;p&gt;and impliment a local environment when the interpreter parses a &lt;code&gt;lambda&lt;/code&gt; or &lt;code&gt;def&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;and impliment a second environment - or symbolic table when the interpreter parses a &lt;code&gt;lambda&lt;/code&gt; or &lt;code&gt;def&lt;/code&gt; function. This second environment typically contains information pertaining to expressions and variables such as their scope or type.&lt;/p&gt;
 
-&lt;p&gt;When we evaluate an expression, we check the expression&amp;rsquo;s function and arguments. If an expression is prefixed by a &lt;code&gt;&amp;#39;&lt;/code&gt;, or the function being applied is the string QUOTE, we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.&lt;/p&gt;
+&lt;p&gt;When we evaluate an expression, we check the expression&amp;rsquo;s function and arguments. If an expression is prefixed by a &lt;code&gt;&amp;#39;&lt;/code&gt;, or the function being applied is the string &amp;ldquo;QUOTE&amp;rdquo;, we return the expression, or arguments literally and do not evaluate. The forms necessary for a lisp to be considered a Micro Lisp are given as the rules below where expressions are denoted e or a, functions as f and variables as v.&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;QUOTE - The value of (QUOTE A) is A&lt;/li&gt;
@@ -437,7 +451,7 @@ case &quot;DEFINE&quot;:
     env.set(variable, evaluate(exp, env));
 &lt;/pre&gt;
 
-&lt;p&gt;Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &amp;#39;variable&amp;rsquo; and its value to the argument expression (x[2])  evaluated with respect to the global enviornment.&lt;/p&gt;
+&lt;p&gt;Here, we switch over the first token x[0], and assuming that the next token x[1] is an atom, we set a new indice in the local environment to the variable name &amp;#39;variable&amp;rsquo; and its value to the argument expression (x[2]) recursively evaluated with respect to the global enviornment.&lt;/p&gt;
 
 &lt;p&gt;With these rules in place, we have a robust and portable lisp that we can use to program anywhere in with a browser. It becomes quite easy to define our own, more complex functions. By querying the help function by typing &amp;ldquo;sample&amp;rdquo; into the interpreter prompt, a number of different examples are presented with the most advanced being application of the fibonacci function onto a range of numbers.&lt;/p&gt;
 
