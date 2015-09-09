@@ -6,13 +6,15 @@
 </description>
     <link>http://chesterholtz.me/</link>
     <atom:link href="http://chesterholtz.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 03 Sep 2015 00:31:45 -0400</pubDate>
-    <lastBuildDate>Thu, 03 Sep 2015 00:31:45 -0400</lastBuildDate>
+    <pubDate>Tue, 08 Sep 2015 22:25:15 -0400</pubDate>
+    <lastBuildDate>Tue, 08 Sep 2015 22:25:15 -0400</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>Gale-Shapely Algorithm and the Stable Marriage Problem</title>
         <description>&lt;p&gt;to write&lt;/p&gt;
+
+&lt;p&gt;On another note, I recently got a free chromebook and wanted to take a break from my academic pursuits and write something simple to put on the webstore. Check out my app redd reader at https://chrome.google.com/webstore/detail/redd-reader/pbhecjpnbjokeahpnaifpbjihffikbpd and feel free to leave comments and suggestions here: https://github.com/Choltz95/reddit-news-for-chrome/issues.&lt;/p&gt;
 </description>
         <pubDate>Fri, 28 Aug 2015 00:00:00 -0400</pubDate>
         <link>http://chesterholtz.me/blog/post/stable_matching</link>
@@ -140,7 +142,7 @@ void separate (ArrayList&lt;Boid&gt; boids) {
     
       <item>
         <title>Distrbuted computation with a raspberry pi cluster(1)</title>
-        <description>&lt;p&gt;I have had a great deal of fun reading about the many adventures of the physicist &lt;a href=&quot;https://en.wikipedia.org/wiki/Richard_Feynman&quot;&gt;Richard Feynman&lt;/a&gt;. I read his semi-autobiography &lt;em&gt;Surely You&amp;rsquo;re Joking Mr. Feynman!&lt;/em&gt; as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking an introductory physics series. Recently I have also been reading about his collaboration with the great computer scientist &lt;a href=&quot;https://en.wikipedia.org/wiki/Danny_Hillis&quot;&gt;Dany Hillis&lt;/a&gt; - coincidentally advised by 3 other famous computer scientists - on the &lt;a href=&quot;https://en.wikipedia.org/wiki/Connection_Machine&quot;&gt;Connection Machine&lt;/a&gt; - a parallel arangement of multiple supercomputers. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the &lt;a href=&quot;https://en.wikipedia.org/wiki/BBN_Butterfly&quot;&gt;BBN Butterfly Processor&lt;/a&gt; - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. &lt;/p&gt;
+        <description>&lt;p&gt;I have had a great deal of fun reading about the many adventures of the physicist &lt;a href=&quot;https://en.wikipedia.org/wiki/Richard_Feynman&quot;&gt;Richard Feynman&lt;/a&gt;. I read his semi-autobiography &lt;em&gt;Surely You&amp;rsquo;re Joking Mr. Feynman!&lt;/em&gt; as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking my university&amp;rsquo;s freshman physics series. Recently I have also been reading about his collaboration with the great computer scientist &lt;a href=&quot;https://en.wikipedia.org/wiki/Danny_Hillis&quot;&gt;Dany Hillis&lt;/a&gt; - coincidentally advised by 3 other famous computer scientists - on the &lt;a href=&quot;https://en.wikipedia.org/wiki/Connection_Machine&quot;&gt;Connection Machine&lt;/a&gt; - a parallel arangement of multiple supercomputers. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the &lt;a href=&quot;https://en.wikipedia.org/wiki/BBN_Butterfly&quot;&gt;BBN Butterfly Processor&lt;/a&gt; - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. &lt;/p&gt;
 
 &lt;p&gt;In this project series I will be experimenting with various distributed algorithms for doing various things over a network. I will be examining the efficiency of computation which can be divided among multiple processors. Algorithms which I will be looking at include the canonical mergesort, matrix arithmetic, plotting a Delaunay Triangulation, and others.&lt;/p&gt;
 
