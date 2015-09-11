@@ -2,10 +2,14 @@
 <a name="a1">WS_1</a>
 notes for CSC 171 WS, Monday. Sept. 16, 2015
 
+DISCLAIMER: 
+This website is purely for archiving my experiences and notes with TAing for the class. 
+These notes my not be particularly helpful to you. You should be able to get by in cs171 by just completing the homework assignments and studying programming. 
+They might be useful as a reference or a way to familiarize yourself with cs terminology if you plan on continuing your studies in cs after 171.
+
 ice breaker
 
 ========================
-
 How many
     declared or provisional majors?
     others?
@@ -14,8 +18,7 @@ How many freshmen/sophomores/juniors/seniors?
 
 How many did/did not take cs 170/160 series?
 
-Who knows Java/Python or any other languages?
-
+Who knows Java/Python or has experience programming in any other languages?
 ========================
 
 Web site -- all the administrative stuff I'm covering today is on-line
@@ -39,16 +42,43 @@ what do computers understand?
 
 what is computer science?
 	the study of modeling problems in terms of what a computer can understand
-
-what computer science is not?
 	Computer Science is not just about building computers or writing computer programs!
 
 what is an algorithm?
-	a process or set of rules to be followed in calculations or other problem-solving operations, especially by a computer.
+	a process or set of instructions to be followed in calculations or other problem-solving operations.
 
 what is a program?
-	A list of instructions that tell a computer what to do. How we write these instructions depends on the language we are writting in...
-	over the years layers of abstraction have allowed us to write programs without ever having to deal with the underlying complexities of low level computation.
+	A set of instructions that tell a computer what to do. How we write these instructions depends on the language we are writting in...
+	over the years layers of abstraction have allowed us to write programs without ever having to deal with the underlying complexities of low level computation. In other words, a computer program is often a specific implementation of a of an algorithm or set of algorithms. An algorithm does not define the specific way it is to be implimented in conjunction with computer hardware. 
+
+Structure of a program:
+--------------------------------------------------------------
+// my first program in Java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+
+}
+---------------------------------------------------------------
+~Hello, World!
+---------------------------------------------------------------
+line 1: // my first program in Java
+The two forward slash tokens indicate that the rest of the line is a comment inserted by the programmer but has no effect on the program itself. Comments are used to provide short explanations or observations concerning the code or program. There are many practices and styles for commenting. Some people utilize many comments, others prefer "self-commenting" code, and a few programmers - like Donald Knuth - follow the literate programming paradigm.
+
+line 2: public class HelloWorld {
+
+line 3: public static void main(String[] args) {
+This line initiates the declaration of a function. Essentially, a function is a group of code statements which are given a name: in this case, this gives the name "main" to the group of code statements that follow. Functions will be discussed in detail in a later chapter, but essentially, their definition is introduced with a succession of a type (int), a name (main) and a pair of parentheses (()), optionally including parameters.
+
+The function named main is a special function in all C++ programs; it is the function called when the program is run. The execution of all C++ programs begins with the main function, regardless of where the function is actually located within the code.
+
+line 6: System.out.println("Hello, World!");
+This line is a C++ statement. A statement is an expression that can actually produce some effect. It is the meat of a program, specifying its actual behavior. Statements are executed in the same order that they appear within a function's body.
+
+This statement has three parts: First, std::cout, which identifies the standard character output device (usually, this is the computer screen). Second, the insertion operator (<<), which indicates that what follows is inserted into std::cout. Finally, a sentence within quotes ("Hello world!"), is the content inserted into the standard output.
+
+Notice that the statement ends with a semicolon (;). This character marks the end of the statement, just as the period ends a sentence in English. All C++ statements must end with a semicolon character. One of the most common syntax errors in C++ is forgetting to end a statement with a semicolon.
 
 methods and class structure
 primitives
@@ -67,6 +97,18 @@ variables
 	basically, an abstract identifier which has a value. In simple algebraic equations of the form ax = b, we refer to x as a variable and a and b as constants. It is the same idea in computer science.
 	We may want to reference the value in x many times, and it might be easier to remember "x" than the value we are referencing, or we might want to alter that value in some way.
 
+Classes
+
+Functions
+
+Brief Recursion intro
+
 PROBLEMS:
 
+Cup Problem
+
+Tower of Hanoi
+
 </pre>
+<pre>
+<a name="a2">WS_1</a>
