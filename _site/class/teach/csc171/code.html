@@ -6,10 +6,66 @@
 	    <title>code for csc 171</title>
 	</head>
 <body>
-TO USE THIS REPOSITORY, FIND (CTRL F) HW_&lt;assignment #&gt;
+Homeworks:<br>
+<a href="#h1">HW_1</a><br>
+<a href="#h2">HW_2</a><br>
+Workshops:<br>
+<a href="#w1">WS_1</a><br>
+<a href="#w2">WS_2</a><br>
 
 <pre>
-<a name="a1">HW_1</a>
+<a name="h1">HW_1</a>
+/*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
+ *I affirm that I have not given or received any 
+ *unauthorized help on this assignment, and that this 
+ *work is my own*/
+public class HelloWorld {
+	public static void main(String[] args) {
+		String x= "Red";
+		System.out.println("Hello World!"); 
+		System.out.println("Chester Holtz");
+		System.out.println("My favorite Color is: "
+				+ x);
+	} // end of the method main
+} // end of class
+
+> Hello World!
+> Chester Holtz
+> My favorite Color is: Red
+</pre>
+
+<pre>
+<a name="w1">WS_1</a>
+/*
+* Recursive solution to Towers of Hanoi problem
+*/
+class HanoiTower {
+	public static void main(String[] args) throws java.lang.Exception {
+		shift_disk(3,0,2,1);
+	}
+	
+	public static void shift_disk(int n, int from, int to, int via) {
+		if (n == 1) {
+			System.out.println(+ from + "->" + to);
+		} else {
+			shift_disk(n - 1, from, via, to);
+			shift_disk(1, from, to, via);
+			shift_disk(n - 1, via, to, from);
+		}
+	}
+}
+
+> 0->2
+> 0->1
+> 2->1
+> 0->2
+> 1->0
+> 1->2
+> 0->2
+</pre>
+
+<pre>
+<a name="h2">HW_2</a>
 /*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
  *I affirm that I have not given or received any 
  *unauthorized help on this assignment, and that this 
@@ -24,8 +80,22 @@ public class HelloWorld {
 	} // end of the method main
 } // end of class
 </pre>
+
 <pre>
-<a name="a1">HW_2</a>
+<a name="w2">WS_2</a>
+/*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
+ *I affirm that I have not given or received any 
+ *unauthorized help on this assignment, and that this 
+ *work is my own*/
+public class HelloWorld {
+	public static void main(String[] args) {
+		String x= "Purple";
+		System.out.println("Hello World!"); 
+		System.out.println("Chester Holtz");
+		System.out.println("My favorite Color is: red"
+				+ x);
+	} // end of the method main
+} // end of class
 </pre>
 
 </body>
