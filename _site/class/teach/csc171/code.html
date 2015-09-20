@@ -13,26 +13,6 @@ Workshops:<br>
 <a href="#w1">WS_1</a><br>
 <a href="#w2">WS_2</a><br>
 
-<pre>
-<a name="h1">HW_1</a>
-/*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
- *I affirm that I have not given or received any 
- *unauthorized help on this assignment, and that this 
- *work is my own*/
-public class HelloWorld {
-	public static void main(String[] args) {
-		String x= "Red";
-		System.out.println("Hello World!"); 
-		System.out.println("Chester Holtz");
-		System.out.println("My favorite Color is: "
-				+ x);
-	} // end of the method main
-} // end of class
-
-> Hello World!
-> Chester Holtz
-> My favorite Color is: Red
-</pre>
 
 <pre>
 <a name="w1">WS_1</a>
@@ -64,39 +44,66 @@ class HanoiTower {
 > 0->2
 </pre>
 
-<pre>
-<a name="h2">HW_2</a>
-/*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
- *I affirm that I have not given or received any 
- *unauthorized help on this assignment, and that this 
- *work is my own*/
-public class HelloWorld {
-	public static void main(String[] args) {
-		String x= "Purple";
-		System.out.println("Hello World!"); 
-		System.out.println("Chester Holtz");
-		System.out.println("My favorite Color is: red"
-				+ x);
-	} // end of the method main
-} // end of class
+<a name="w2">WS_2</a>
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+public class HelloWorld{
+      public static void main(String[] args) {
+            int secretNumber;
+            secretNumber = (int) (Math.random() * 99 + 1);           
+            Scanner input = new Scanner(System.in);
+            int guess;
+            do {
+                System.out.print("Enter a guess (1-100): ");
+                while(true) {
+                    try {
+                        guess = input.nextInt();
+                        break;
+                    }
+                    catch(InputMismatchException e) {
+                        System.out.print("Invalid input, try again: ");
+                        input.next();
+                    }
+                }                  
+                if (guess == secretNumber) {
+                    System.out.println("Your guess is correct. Congratulations!");
+                } else if (guess < secretNumber) {
+                    System.out.println("Your guess is smaller than the secret number.");
+                } else if (guess > secretNumber) {
+                    System.out.println("Your guess is greater than the secret number.");
+                }
+            } while (guess != secretNumber);
+      }
+}
 </pre>
 
 <pre>
-<a name="w2">WS_2</a>
+<a name="h1">HW_1</a>
 /*&lt;Name&gt;, 1, section &lt;#&gt;, &lt;Lab TA name&gt;
  *I affirm that I have not given or received any 
  *unauthorized help on this assignment, and that this 
  *work is my own*/
 public class HelloWorld {
 	public static void main(String[] args) {
-		String x= "Purple";
+		String x= "Red";
 		System.out.println("Hello World!"); 
 		System.out.println("Chester Holtz");
-		System.out.println("My favorite Color is: red"
+		System.out.println("My favorite Color is: "
 				+ x);
 	} // end of the method main
 } // end of class
+
+> Hello World!
+> Chester Holtz
+> My favorite Color is: Red
 </pre>
+
+<pre>
+<a name="h2">HW_2</a>
+</pre>
+
+<pre>
 
 </body>
 </html>
