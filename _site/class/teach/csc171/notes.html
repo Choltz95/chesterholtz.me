@@ -210,7 +210,7 @@ to iteration).
 The approach can be applied to many types of problems, and recursion is one of the central ideas of computer science.
 Many language support functions ability to call itself in the program code.
 
-Structure and control flow of a simple program "int is_equal(n1, n2)"
+Structure and control flow of a simple program "int is_equal(n1, n2)" which returns true or false depending on the equivalency of two integers n1 and n2.
 --------------------------------------------------------------
      +-----+       
      |     |       
@@ -230,7 +230,7 @@ Structure and control flow of a simple program "int is_equal(n1, n2)"
         V
      +-----+       
      |IS   | no  +-----+   
-     |num1=+---->+Ret 0|       
+     |num1=+---->+Ret F|       
      |num2?|     +-----+   
      +--+--+    
         |
@@ -238,14 +238,14 @@ Structure and control flow of a simple program "int is_equal(n1, n2)"
         |
         V   
      +--+--+   
-     |Ret 1|       
+     |Ret T|       
      +-----+ 
 ---------------------------------------------------------------
 note about function returns:
 The return statement of a function ends its execution and specifies a value to be returned to the function caller.
 If the method returns a void, it doesnt send back anything. For example, if I had a method p
 that accepts an integer and then returns it, I could put int x = p(5); and x = 5. You are not restricted to 
-numbers for return values. You can return strings as well. In the above example, I could just as easily return booleans "True" or "False"
+numbers for return values. You can return strings as well. In the above example, I could just as easily return number representations of T/F: 1/0
 
 WS 2 Problems:
 
