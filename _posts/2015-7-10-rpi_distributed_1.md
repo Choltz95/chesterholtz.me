@@ -55,7 +55,7 @@ except socket.error as msg:
 	sys.exit()
 </pre>
 
-Finally, I send and recieve the data in 4KB size chunks. Once sorted, the client sends its assigned subaray back to the server to be merged.
+Finally, I send and recieve the data in 4KB size chunks. Once sorted, the client sends its assigned subarray back to the server to be merged.
 <pre class="prettyprint linenums">
 for i in range(procno - 1):	# Converts array section into string to be sent
 	arraystring = repr(sections[i+1]) 
@@ -94,7 +94,7 @@ $ sudo python server.py 3 10000
 [DEBUG] Time taken to sort: 21.223145 seconds.
 </pre>
 
-This concludes the first part of this project series. Expect more updates comming soon.
+This concludes the first part of this project series. Expect more updates coming soon.
 
 [1]: https://en.wikipedia.org/wiki/Richard_Feynman
 [2]: https://en.wikipedia.org/wiki/Danny_Hillis
