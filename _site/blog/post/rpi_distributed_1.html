@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name = "viewport" content = "width = device-width">
+
+  <title>Distrbuted computation with a raspberry pi cluster(1)</title>
+  <meta name="description" content="I have had a great deal of fun reading about the many adventures of the physicist Richard Feynman. I read his semi-autobiography Surely You&#39;re Joking Mr....">
+
+  <link rel="stylesheet" href="/css/blog.css">
+
+  
+
+  <link rel="canonical" href="http://chesterholtz.me/blog/post/rpi_distributed_1">
+  <link rel="alternate" type="application/rss+xml" title="Chester Holtz" href="http://chesterholtz.me/blog/feed.xml" />
+
+  <!-- fonts.com -->
+  <script type="text/javascript">
+    // first, create the object that contains
+    // configuration variables
+    MTIConfig = {};
+
+    // next, add a variable that will control
+    // whether or not FOUT will be prevented
+    MTIConfig.EnableCustomFOUTHandler = true // true = prevent FOUT
+  </script>
+  <script type="text/javascript" src="http://fast.fonts.net/jsapi/3ac768d8-7a5c-4fd8-b377-f61d7f1760fa.js"></script>
+
+  <!-- prettify -->
+  <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/javascript/prettify.js"></script>
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+
+  <body onload="prettyPrint()">
+
+    <div id="container" class="group">
+
+  <h1>
+    <a class="site-title" href="/blog/">Chester Holtz</a>
+  </h1>
+
+  <div class="navigation-links">
+    <a href="/">About</a>
+    <span id="desktop-only">
+      &nbsp;
+      <a href="/blog/archive.html">Archive</a>
+      &nbsp;
+      <a href="/blog/feed.xml">RSS</a>
+    </span>
+  </div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <div id="content" class="group">
+
+  <header class="post-header">
+    <h2 class="post-title"><a href="">Distrbuted computation with a raspberry pi cluster(1)</a></h1>
+  </header>
+
+  <div class="main">
+    <p>I have had a great deal of fun reading about the many adventures of the physicist <a href="https://en.wikipedia.org/wiki/Richard_Feynman">Richard Feynman</a>. I read his semi-autobiography <em>Surely You&#39;re Joking Mr. Feynman!</em> as a kid, watched his video series on computer heuristics as a freshman taking a class on organization of computer systems, and found his physics notes to be invaluable while taking my university&#39;s freshman physics series. Recently I have also been reading about his collaboration with the great computer scientist <a href="https://en.wikipedia.org/wiki/Danny_Hillis">Dany Hillis</a> - coincidentally advised by 3 other famous computer scientists - on the <a href="https://en.wikipedia.org/wiki/Connection_Machine">Connection Machine</a> - a parallel arangement of multiple supercomputers. Additionally, one of my mentors at The University of Rochester just retired, and while browsing his library, I found that he had worked on the development of software for the <a href="https://en.wikipedia.org/wiki/BBN_Butterfly">BBN Butterfly Processor</a> - one of the largest parallel computers of the 1980s. These factors all served to exite my interest in parallel computation and distributed systems. Although it is a topic I am most interested in, I will most likely not be taking a class on the topic, but also want some sort of foundation in the subject. </p>
+
+<p>In this project series I will be experimenting with various distributed algorithms for doing various things over a network. I will be examining the efficiency of computation which can be divided among multiple processors. Algorithms which I will be looking at include the canonical mergesort, matrix arithmetic, plotting a Delaunay Triangulation, and others.</p>
+
+<p>For testing and comparing the parallelized and single-processor approaches for various aglorithms, I primarily consider one important metric: average computation time. These statistics are gathered during run time by using the high precision timers in the C++ chrono library, which allows the collection of timing data accurate on the order of nanoseconds. Testing itself is performed on three raspberry Pi B+ computers. These machines feature an 700 MHz single-core ARM1176JZF-S processor with 144 KB of Cache and 512 MB of RAM. The complete code for this project can be found on on my <a href="https://github.com/Choltz95/distributedRPI">github</a></p>
+
+<p>Merge sort is a classic sorting algorithm used to introduce the divide and conquer algorithm design paradigm. As such, it is known to parallelize well.</p>
+
+<p>Recursively, mergesort processes an unsorted list of numbers by dividing the unsorted list into n sublists, each containing 1 element (a list of 1 element is considered sorted). It then repeatedly merges sublists to produce new sorted sublists until there is only 1 sublist remaining. This will be the sorted list. The following is a short walkthrough of the server-side code written for a distributed mergesort and the results of the comparison.</p>
+
+<p>An general example is given below with some merge and split steps skipped to conserve space. 
+<pre class="prettyprint linenums">
+Start       : 3--4--2--1--7--5--8--9--0--6
+Split       : 3--4--2--1--7  5--8--9--0--6
+Split       : 3  4  2  1  7  5  8  9  0  6
+Merge       : 3--4  1--2  5--7  8--9  0--6
+Merge       : 1--2--3--4  5--7--8--9  0--6
+Merge       : 0--1--2--3--4--5--6--7--8--9
+</pre></p>
+
+<p>I partition my initial unsorted array into n subarrays of equal size on the server. These subarrays will be passed to individual raspberry pi nodes to be sorted before being merged on the server. My breakarray() funtion intuitively takes the initial unsorted array and the number of processors on the network.
+<pre class="prettyprint linenums">
+def breakarray(array, n): 
+    sectionlength = len(array)/n    #length of each section 
+    result = [] 
+    for i in range(n):
+        if i &lt; n - 1:
+            result.append( array[ i * sectionlength : (i+1) * sectionlength ] )
+        #include all remaining elements for the last section 
+        else:
+            result.append( array[ i * sectionlength : ] )<br>
+    return result
+</pre></p>
+
+<p>Furthermore, setting up a simple network is quite simple. I make use of Python&#39;s socket module to do this. I first provide host and port parameters and create an inet, streaming socket before binding the socket to local host and port.
+<pre class="prettyprint linenums">
+HOST = &#39;&#39;
+PORT = 50007 
+s = socket.socket(socket.AF<em>INET, socket.SOCK</em>STREAM) 
+print &#39;[DEBUG] Socket created&#39;
+s.setsockopt(socket.SOL<em>SOCKET, socket.SO</em>REUSEADDR, 1) 
+try:
+    s.bind((HOST, PORT))
+except socket.error as msg:
+    print &#39;[ERROR] Bind failed. Error Code : &#39; + str(msg[0]) + &#39; Message &#39; + msg<a href="https://en.wikipedia.org/wiki/Richard_Feynman">1</a>
+    sys.exit()
+</pre></p>
+
+<p>Finally, I send and recieve the data in 4KB size chunks. Once sorted, the client sends its assigned subarray back to the server to be merged.
+<pre class="prettyprint linenums">
+for i in range(procno - 1): # Converts array section into string to be sent
+    arraystring = repr(sections[i+1]) 
+    conn.sendto(arraystring, addr_list[i])  # Sends array string 
+print &#39;[DEBUG] Data sent, sorting array...&#39;
+</pre></p>
+
+<pre class="prettyprint linenums">
+# Receives sorted sections from each client
+for i in range(procno - 1):
+    arraystring = '' 
+    print '[DEBUG] Receiving data from clients...' 
+    while 1:
+        data = conn.recv(4096)  # Receives data in chunks 
+        arraystring += data # Adds data to array string 
+        if ']' in data: # When end of data is received
+            break
+
+    print '[DEBUG] Data received, merging arrays...'    
+    array = ms.merge(array, eval(arraystring))  # Merges current array with section from client
+    print '[DEBUG] Arrays merged.'
+</pre>
+
+<p>Tests were preformed on list lengths ranging from 1,000 to 1,000,000, and in all cases, the distributed set up outpreformed the single-node settup by factor seemingly proportional to the number of nodes I distributed the unsorted list accross. Sample output is given below:</p>
+
+<pre class="prettyprint">
+$ sudo python server.py 3 10000
+[DEBUG] Waiting for client...
+[DEBUG] connected to 192.168.1.2:50007
+[DEBUG] connected to 192.168.1.3:50007
+[DEBUG] Data sent, sorting array...
+[DEBUG] Array sorted.
+[DEBUG] Receiving data from clients...
+[DEBUG] Data Recieved, merging arrays...
+[DEBUG] Arrays merged.
+[DEBUG] Time taken to sort: 21.223145 seconds.
+</pre>
+
+<p>This concludes the first part of this project series. Expect more updates coming soon.</p>
+
+  </div>
+  <br/>
+
+  <div class="navigation group">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+      </div>
+    </div>
+
+    </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-24453347-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name = "viewport" content = "width = device-width">
+
+  <title>Emergent Behavior Through Boids Simulation(1)</title>
+  <meta name="description" content="Simulation of natural phenomena is something I have been interested in for a long time. In particular, approximating the aggregate moving and interaction of ...">
+
+  <link rel="stylesheet" href="/css/blog.css">
+
+  
+
+  <link rel="canonical" href="http://chesterholtz.me/blog/post/predprey_1">
+  <link rel="alternate" type="application/rss+xml" title="Chester Holtz" href="http://chesterholtz.me/blog/feed.xml" />
+
+  <!-- fonts.com -->
+  <script type="text/javascript">
+    // first, create the object that contains
+    // configuration variables
+    MTIConfig = {};
+
+    // next, add a variable that will control
+    // whether or not FOUT will be prevented
+    MTIConfig.EnableCustomFOUTHandler = true // true = prevent FOUT
+  </script>
+  <script type="text/javascript" src="http://fast.fonts.net/jsapi/3ac768d8-7a5c-4fd8-b377-f61d7f1760fa.js"></script>
+
+  <!-- prettify -->
+  <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/javascript/prettify.js"></script>
+  <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+
+  <body onload="prettyPrint()">
+
+    <div id="container" class="group">
+
+  <h1>
+    <a class="site-title" href="/blog/">Chester Holtz</a>
+  </h1>
+
+  <div class="navigation-links">
+    <a href="/">About</a>
+    <span id="desktop-only">
+      &nbsp;
+      <a href="/blog/archive.html">Archive</a>
+      &nbsp;
+      <a href="/blog/feed.xml">RSS</a>
+    </span>
+  </div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <div id="content" class="group">
+
+  <header class="post-header">
+    <h2 class="post-title"><a href="">Emergent Behavior Through Boids Simulation(1)</a></h1>
+  </header>
+
+  <div class="main">
+    <p>Simulation of natural phenomena is something I have been interested in for a long time. In particular, approximating the aggregate moving and interaction of a group of individuals is something I have thought about ever since reading Michael Chriton&#39;s <a href="https://en.wikipedia.org/wiki/Prey_(novel)">Prey</a> and about the main character&#39;s PredPrey software. A few years ago a few friends and I wrote a program based around the rules defined by <a href="http://www.red3d.com/cwr/">Craig Reynolds</a> regarding the behavior of birds engaged in flocking behaviors in response to a predator. Reynolds proposed this model of coordinated animal motion in 1986 and labled the individuals composing a simulated flock <a href="https://en.wikipedia.org/wiki/Boids">&quot;Boids&quot;</a></p>
+
+<p>Essentially, the behavior of these Boids is subject to three fundamental rules: cohesion, separation and alignment. The beauty of Reynold&#39;s model is the simplicity of these rules, and the resulting complexity of the Boid&#39;s behavior. Reynold&#39;s model gave rise to the concept of emergent behavior: the complex interaction of individual agents adhering to a set of simple rules in an artificial intelligent simulation.</p>
+
+<p>I coded this project in a weekend in about 300 lines using the processing language with the processing.js library as a way to visualize the three rules in a browser. In predprey, each rule is implimented as a force vector and computed for each boid based on the location (also a vector) of surrounding boids. Along with the canonical behavioral rules, I also implimented more advanced ones such as response to predators, obstacles, exhaustion, and goalfinding.</p>
+
+<p>Before implimenting the actual rules, I first wrote a reusable method to return data from surrounding agents. The radius parameter refers to the radius around a particular boid for the method to get location and velocity vectors from. Depending on the number of boids within the radius, the method will then compute the average location (center of mass) or average velocity of the boids within the radius.</p>
+
+<pre class="prettyprint linenums">
+PVector compute_com(ArrayList<Boid> boids, int view_rad, boolean v) {
+    float count = 0; // Keep track of how many boids are too close.
+    PVector vec_sum = new PVector();
+
+    for (Boid other: boids) {
+      int separation = mass + view_rad;
+      PVector dist = PVector.sub(other.getLoc(), loc); // distance to other boid.
+      float d = dist.mag();
+
+      if (d != 0 && d<separation) { // If closer than desired, and not self.
+        PVector other_vec = new PVector();
+        if(v) { other_vec = other.getVel(); } // if we want to average the velocities vs. locations
+        else { other_vec = other.getLoc(); }
+        vec_sum.add(other_vec); // All locs from closeby boids are added.
+        count ++;
+      }
+    }
+    vec_sum.div(count);
+    if(count > 0) {
+      return vec_sum;
+    } else {
+      return null;
+    }
+ }
+</pre>
+
+<p>From here, implimentation of Reynold&#39;s fundamental rules is trivial, and  the rule for separation is provided below. In my implimentation, the max_force coefficients and radii are determined arbitrarily for more &quot;natural&quot; behavior. The boids are also colorized to represent the different state transitions.</p>
+
+<pre class="prettyprint linenums">
+void separate (ArrayList<Boid> boids) {
+    PVector com = compute_com(boids, 20, false);
+    if(com != null) {
+      color[2]+=2;
+      PVector avoidVec = PVector.sub(loc, com);
+      avoidVec.limit(max_force*2.5); // Weigh by factor arbitrary factor 2.5.
+      apply_force(avoidVec);    
+    }
+}
+</pre>
+
+<p>Boids is an interesting little program that serves as the initial example of emergent behavior from three simple rules. For fun, I added a little predator that the boids flee from. Although there are few applications of these kinds of simulations, they are fun to code and entertaining to watch.</p>
+
+<p>If I have time in the future, I would love to expand this program to encompass the third dimention and I also would like to impliment a genetic algorithm to effectively have the boids &quot;evolve&quot; and develop behaviors other than the ones I decide.</p>
+
+  </div>
+  <br/>
+
+  <div class="navigation group">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+      </div>
+    </div>
+
+    </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-24453347-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  </body>
+
+</html>
