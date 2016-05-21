@@ -14,4 +14,4 @@ github_username:  choltz95
 markdown: redcarpet
 redcarpet:	
 extensions: [smart, footnotes]
-gems: [jekyll-paginate]
+#gems: [jekyll-paginate]
