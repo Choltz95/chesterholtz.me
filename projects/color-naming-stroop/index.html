@@ -50,7 +50,8 @@
       is_html: true,
       stimulus: "<h1 style='color:" + color + ";'>" + practice_wordlist[i] + "</h1>",
       data:{word: practice_wordlist[i],
-            color: color}
+            color: color,
+            block: 'practice'}
     }
     practice_stimuli.push(stim);
   }
@@ -63,16 +64,17 @@
     var stimr = {
       is_html: true,
       stimulus: "<h1 style='color:blue;'>" + test_wordlist[i] + "</h1>",
-      data:{response: 'test',
+      data:{word: test_wordlist[i],
             color: 'blue',
-            block: 'practice'
+            block: 'test'
       }
     }
     var stimb = {
       is_html: true,
       stimulus: "<h1 style='color:red;'>" + test_wordlist[i] + "</h1>",
-      data:{response: 'test',
-            color: 'blue'}
+      data:{word: test_wordlist[i],
+            color: 'blue',
+            block: 'test'}
     }
     test_stimuli1.push(stimr);
     test_stimuli2.push(stimr);
@@ -167,7 +169,6 @@
   };
   
   var test_timeline = [];
-  test_timeline.push(fixation_block);
   test_timeline.push(test_block1);
   test_timeline.push(test_block2);
   test_timeline.push(test_debrief_block);
