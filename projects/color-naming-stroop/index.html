@@ -29,6 +29,9 @@
     timing_response: 1000,
     timing_post_trial: 200,
     response_ends_trial: false,
+    data:{word: test_wordlist[i],
+      block: 'fixation'
+    }
   };
 
   /* define test blocks */
@@ -96,10 +99,10 @@
     on_finish: function(data){
       trial_index++;
       if(data.key_press == 67) {
-        jsPsych.data.addDataToLastTrial({key: 'c' });
+        jsPsych.data.addDataToLastTrial({key_pressed: 'c', participant_response:'red' });
       } else if (data.key_press == 77) {
-        jsPsych.data.addDataToLastTrial({key: 'm' });
-      } else { jsPsych.data.addDataToLastTrial({key: '' }); }
+        jsPsych.data.addDataToLastTrial({key_pressed: 'm' });
+      } else { jsPsych.data.addDataToLastTrial({key_pressed: '', participant_response:'blue' }); }
     },
     timeline: practice_trials
   };
@@ -136,10 +139,10 @@
     on_finish: function(data){
       trial_index++;
       if(data.key_press == 67) {
-        jsPsych.data.addDataToLastTrial({key: 'c' });
+        jsPsych.data.addDataToLastTrial({key_pressed: 'c', participant_response:'red' });
       } else if (data.key_press == 77) {
-        jsPsych.data.addDataToLastTrial({key: 'm' });
-      } else { jsPsych.data.addDataToLastTrial({key: '' }); }
+        jsPsych.data.addDataToLastTrial({key_pressed: 'm', participant_response:'blue' });
+      } else { jsPsych.data.addDataToLastTrial({key_pressed}); }
     },
     timeline: test_trials1
   };
@@ -152,10 +155,10 @@
     on_finish: function(data){
       trial_index++;
       if(data.key_press == 67) {
-        jsPsych.data.addDataToLastTrial({key: 'c' });
+        jsPsych.data.addDataToLastTrial({key_pressed: 'c', participant_response:'red' });
       } else if (data.key_press == 77) {
-        jsPsych.data.addDataToLastTrial({key: 'm' });
-      } else { jsPsych.data.addDataToLastTrial({key: '' }); }
+        jsPsych.data.addDataToLastTrial({key_pressed: 'm', participant_response:'blue' });
+      } else { jsPsych.data.addDataToLastTrial({key_pressed: '' }); }
     },
     timeline: test_trials2
   };
@@ -183,6 +186,7 @@
     show_progress_bar: true,
     on_finish: function() {
       jsPsych.data.displayData();
+      jsPsych.data.localSave('data.csv', 'csv');
     }
   });
 </script>
